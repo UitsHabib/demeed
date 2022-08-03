@@ -1,9 +1,6 @@
 const User = require('./user.model')
 
 const getUsers = (req, res) => {
-    // console.log("====================TEst=================");
-    // console.log(User);
-
     User.findAll()
     .then(users => {
         res.send(users);
