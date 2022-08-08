@@ -39,12 +39,11 @@ function getGlobbedPaths(globPatterns, excludes) {
 }
 
 function getGlobalConfig() {
-    const assets = require(path.join(process.cwd(), 'src/assests/default.js')); 
-
+    const assets = require(path.join(process.cwd(),"src/config/assets/default")) 
+    console.log(assets);
     const config = {
         routes: assets.routes
     }
-
     return config;
 }
 
