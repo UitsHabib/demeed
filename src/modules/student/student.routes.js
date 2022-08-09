@@ -1,4 +1,4 @@
-const { getStudents, createStudent } = require("./student.controller");
+const { getStudents, createStudent} = require("./student.controller");
 
 module.exports = (app) => {
 

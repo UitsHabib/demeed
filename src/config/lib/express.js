@@ -5,7 +5,7 @@ const config = require("../index");
 module.exports = () => {
   const app = express();
   
-  app.use(express.json());
+  app.use(express.json()); 
 
   const globalConfig = config.getGlobalConfig();
   
