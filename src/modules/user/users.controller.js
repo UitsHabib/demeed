@@ -1,9 +1,6 @@
 const User = require('./user.model')
 
 const getUsers = (req, res) => {
-    // console.log("====================TEst=================");
-    // console.log(User);
-
     User.findAll()
     .then(users => {
         res.send(users);
@@ -24,9 +21,6 @@ const createUser =  (req, res) => {
     }).catch(error => {
         console.log(error);
     });
-
-    // users.push(user);
-    //res.send(createdUser);
  }
 
  module.exports.getUsers = getUsers;

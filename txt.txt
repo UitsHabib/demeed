@@ -1,0 +1,78 @@
+/*
+    # Javascript
+    1. basic Javascript
+        i. variables
+        ii. if else
+        iii. for loop 
+        iv. function
+    2. Primitive and Non-Primitive data types
+    3. Execution Context
+        # Part:
+            i. Memory Component or Variable Environment 
+            ii. Code Component or Thread of Execution 
+        # Phases:
+            i. Creation phase or Memory Creation phase
+            ii. Execution phase or Code execution phase 
+    4. Callstack, Hoisting
+    5. Scope, Scope Chain, Lexical Environment
+    6. Closure
+    7. function 
+        a. function statement or function declaration 
+        b. function expression 
+        c. anonymous function 
+        d. first class function 
+        e. callback function 
+        f. arrow function 
+        g. parameters vs arguments 
+    8. let, const, temporal dead zone 
+    9. Variable Shadowing
+    10. Script, block, global scope 
+    11. Modern browser
+        i. Event loop 
+        ii. heap 
+            a. callback queue or task queue
+            b. microtask queue 
+        iii. web apis 
+        iv. Javascript Engine 
+    12. Class, Object 
+    13. Inheritance (extend keyword)
+    14. Spread Operator, object destructuring
+    15. map, forEach, filter, find 
+
+    # Extras
+    16. call, bind, apply
+    17. prototype, protoype chain 
+    18. Garbage Collector
+    19. Promise, callback hell, async/await
+
+    # Operating System 
+    1. Process
+    2. Thread 
+    3. Context Switching
+    4. RAM/Hard Disk 
+    5. PCB 
+    6. Processor
+        a. Registers
+        b. Logical CPU unit
+
+    # NODE 
+    1. Global 
+    2. Built in modules
+        a. path 
+        b. os 
+        c. EventEmitter
+        d. http 
+    3. Custom module 
+    4. Module wrapper function 
+    5. web server using http 
+
+    # Express 
+    1. express, 
+    2. app 
+    3. route/ router
+    4. controller 
+    5. GET, POST, PATCH, PUT, DELETE
+    6. Project Structure
+    7. Postman req, res 
+    8. Database handling
+*/

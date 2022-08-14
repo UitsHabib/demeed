@@ -13,5 +13,5 @@ module.exports = () => {
     require(path.resolve(routePath))(app);
   });
 
-  return app
+  return app;
 };
