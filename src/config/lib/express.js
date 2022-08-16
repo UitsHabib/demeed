@@ -1,8 +1,8 @@
-const path = require('path');
-const express = require("express");
-const config = require("../index");
-
 module.exports = () => {
+  const path = require('path');
+  const express = require("express");
+  const config = require("../index");
+  
   const app = express();
   
   app.use(express.json());

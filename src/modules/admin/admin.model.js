@@ -3,7 +3,7 @@ const sequelize = require(path.join(process.cwd(), '/src/config/lib/sequelize'))
 
 const { DataTypes } = require('sequelize');
 
-const Admin = sequelize.define('admin', {
+const Admin = sequelize.define('admins', {
     id: {
         allowNull: false,
         primaryKey: true,
@@ -20,7 +20,7 @@ const Admin = sequelize.define('admin', {
         type: DataTypes.STRING
     }
 }, {
-    tableName: 'admin',
+    tableName: 'admins',
     timestamps: false,
     createdAt: 'created_at',
     updatedAt: 'updated_at'

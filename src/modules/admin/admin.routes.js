@@ -6,4 +6,4 @@ const adminRoute = (app) => {
     app.post('/admin/login', signing);
 };
 
-module.exports = adminRoute
+module.exports = adminRoute;
