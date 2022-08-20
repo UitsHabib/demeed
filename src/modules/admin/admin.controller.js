@@ -44,7 +44,7 @@ const adminSignIn = async (req, res) => {
       console.log(error);
     }
   } else {
-    res.send({ error: "Something went wrong !" });
+    res.send({ error: "Invalid credentials !" });
   }
 };
 
@@ -61,9 +61,10 @@ const passwordReset = async (req, res) => {
       console.log(error);
     }
   } else {
-    res.send({ error: "Something went wrong !" });
+    res.send({ error: "Invalid Email !" });
   }
 };
 
 module.exports.registerAdmin = registerAdmin;
 module.exports.adminSignIn = adminSignIn;
+module.exports.passwordReset = passwordReset;
