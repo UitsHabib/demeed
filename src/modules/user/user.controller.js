@@ -10,21 +10,19 @@ const getUsers = (req, res) => {
     })
 }
 
-const createUser =  (req, res) => {
+const registerUser =  (req, res) => {
     const user = {
-     email: req.body.email,
-     password: req.body.password
+        username:req.body.username,
+        email: req.body.email,
+        password: req.body.password
     }
 
     User.create(user).then(user => {
-        res.send(user);
+        res.send({'message':'User register successful !'});
     }).catch(error => {
         console.log(error);
     });
-
-    // users.push(user);
-    //res.send(createdUser);
  }
 
  module.exports.getUsers = getUsers;
- module.exports.createUser = createUser;
+ module.exports.registerUser = registerUser;
