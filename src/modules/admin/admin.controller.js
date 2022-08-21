@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken");
 const Admin = require("./admin.model");
 
 const checkIfAdminExists = async (email) => {
@@ -13,27 +14,53 @@ const checkIfAdminExists = async (email) => {
   }
 };
 
-const adminSignIn = async (req, res) => {
-  const signInRequest = {
-    email: req.body.email,
-    password: req.body.password,
+const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = {
+    email,
+    password,
   };
 
-  try {
-    const response = await Admin.findOne({
-      where: {
-        email: signInRequest.email,
-        password: signInRequest.password,
-      },
-    });
-    if (!response) {
-      res.send("Invalid credentials.");
+  const promise = Admin.findOne({
+    where: {
+      email: user.email,
+      password: user.password,
+    },
+  });
+
+  function success(user) {
+    console.log(user);
+    if (user) {
+      //create a token and send it
+      const access_token = jwt.sign(
+        {
+          id: user.id,
+        },
+        "jwt-secret",
+        {
+          expiresIn: "1h",
+          issuer: user.id.toString(),
+        }
+      );
+
+      res.cookie("access_token", access_token, {
+        httpOnly: true,
+        signed: true,
+      });
+
+      res.status(200).json(user);
     } else {
-      res.send("Signed in successfully.");
+      res.status(404).send("User not found.");
     }
-  } catch (error) {
-    console.log(error);
   }
+
+  function error(err) {
+    console.log(err);
+    res.status(500).send("Internal server error.");
+  }
+
+  promise.then(success).catch(error);
 };
 
 const adminSignUp = async (req, res) => {
@@ -94,7 +121,52 @@ const adminResetPassword = async (req, res) => {
   }
 };
 
-module.exports.adminSignIn = adminSignIn;
+const getSignedInUserProfile = (req, res) => {
+  /*
+    1. Is the user logged in?
+    2. If logged in, send his profile
+    3. else send msg "Please login first to get your profile"
+  */
+
+  const token = req.signedCookies["access_token"];
+
+  if (!token) {
+    return res.status(400).send("Bad request.");
+  }
+  const payload = jwt.verify(token, "jwt-secret");
+  const { id } = payload;
+
+  const promise = Admin.findOne({
+    where: {
+      id,
+    },
+  });
+
+  function success(user) {
+    console.log(user);
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(404).send("User not found.");
+    }
+  }
+
+  function error(err) {
+    console.log(err);
+    res.status(500).send("Internal server error.");
+  }
+
+  promise.then(success).catch(error);
+};
+
+const logout = (req, res) => {
+  res.clearCookie("access_token");
+  res.send("Logged out.");
+};
+
+module.exports.login = login;
 module.exports.adminSignUp = adminSignUp;
 module.exports.adminForgotPassword = adminForgotPassword;
 module.exports.adminResetPassword = adminResetPassword;
+module.exports.getSignedInUserProfile = getSignedInUserProfile;
+module.exports.logout = logout;

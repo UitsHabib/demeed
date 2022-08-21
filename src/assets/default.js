@@ -1,3 +1,3 @@
 module.exports = {
-  routes: ["src/modules/admin/admin.routes.js"],
+  routes: ["src/modules/**/*.routes.js"],
 };
