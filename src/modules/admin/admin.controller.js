@@ -23,13 +23,17 @@ const loginAdmin = async (req, res) => {
 
   const admin = await Admin.findOne({ where: { username: usernameInput } });
   if (admin) {
-    if (admin.dataValues.password === passwordInput) {
-      res.send("Welcome to your dashboard");
-    } else {
-      res.send("Your password is not match");
+    try {
+      if (admin.dataValues.password === passwordInput) {
+        res.send("Welcome to your dashboard");
+      } else {
+        res.send("Your password is not match");
+      }
+    } catch (error) {
+      console.log(error);
     }
   } else {
-    res.send("Please enter your valid username");
+    res.send("Username is not match");
   }
 };
 
@@ -42,18 +46,22 @@ const updateAdmin = async (req, res) => {
     where: { username: usernameInput },
   });
   if (findAdmin) {
-    if (newPassword === confirmPassword) {
-      if (newPassword === findAdmin.password) {
-        res.send(
-          "Your new password cannot be the same as your current password"
-        );
+    try {
+      if (newPassword === confirmPassword) {
+        if (newPassword === findAdmin.password) {
+          res.send(
+            "Your new password cannot be the same as your current password"
+          );
+        } else {
+          findAdmin.password = newPassword;
+          findAdmin.save();
+          res.send(findAdmin);
+        }
       } else {
-        findAdmin.password = newPassword;
-        findAdmin.save();
-        res.send(findAdmin);
+        res.send("Your both password is not match");
       }
-    } else {
-      res.send("Your both password is not match");
+    } catch (error) {
+      console.log(error);
     }
   } else {
     res.send("Username is not match");
