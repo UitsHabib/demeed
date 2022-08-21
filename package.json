@@ -1,0 +1,28 @@
+{
+  "name": "demeed",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UitsHabib/demeed.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/UitsHabib/demeed/issues"
+  },
+  "homepage": "https://github.com/UitsHabib/demeed#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "mysql2": "^2.3.3",
+    "nodemon": "^2.0.19",
+    "sequelize": "^6.21.4"
+  }
+}
