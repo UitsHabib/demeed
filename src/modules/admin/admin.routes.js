@@ -1,9 +1,4 @@
-const {
-  getAdmins,
-  createAdmin,
-  loginAdmin,
-  updateAdmin,
-} = require("./admin.controller");
+const { getAdmins, createAdmin, loginAdmin, updateAdmin } = require("./admin.controller");
 
 module.exports = (app) => {
   app.get("/admin", getAdmins);
