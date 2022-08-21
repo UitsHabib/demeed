@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon index",
+    "seeder": "node seeder",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,6 +21,9 @@
   "homepage": "https://github.com/UitsHabib/demeed#readme",
   "dependencies": {
     "express": "^4.18.1",
+    "glob": "^8.0.3",
+    "lodash": "^4.17.21",
+    "mysql2": "^2.3.3",
     "sequelize": "^6.21.4"
   }
 }
