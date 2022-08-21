@@ -32,19 +32,16 @@ const registerAdmin = async (req, res) => {
 
 // function for singin in admin dashboard
 const adminSignIn = async (req, res) => {
-  const data = { ...req.body };
-  const response = await checkAdminExsists(data.email);
-  if (response) {
-    try {
-      data.email == response.dataValues.email &&
-      data.password == response.dataValues.password
-        ? res.send({ message: "Welcome to deemed admin dashboard !" })
-        : res.send({ message: "Invalid credentials !" });
-    } catch (error) {
-      console.log(error);
-    }
-  } else {
-    res.send({ error: "Invalid credentials !" });
+  const request = { ...req.body };
+  try {
+    const response = await Admin.findOne({
+      where: { email: request.email, password: request.password },
+    });
+    response
+      ? res.send({ message: "Login to admin dashboard successful !" })
+      : res.send({ error: "Invalid credentials !" });
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -52,16 +49,12 @@ const adminSignIn = async (req, res) => {
 const passwordReset = async (req, res) => {
   const data = { ...req.body };
   const response = await checkAdminExsists(data.email);
-  if (response) {
-    try {
-      data.email == response.email
-        ? res.send({ message: `Password reset link sent to ${data.email}` })
-        : res.send({ message: "Invalid email !" });
-    } catch (error) {
-      console.log(error);
-    }
-  } else {
-    res.send({ error: "Invalid Email !" });
+  try {
+    response
+      ? res.send({ message: `Password reset link sent to ${response.email}` })
+      : res.send({ error: "Email not found " });
+  } catch (error) {
+    console.log(error);
   }
 };
 
