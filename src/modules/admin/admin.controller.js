@@ -31,18 +31,18 @@ const registerAdmin = async (req, res) => {
 };
 
 // function for singin in admin dashboard
-const adminSignIn = async (req, res) => {
-  const request = { ...req.body };
-  try {
-    const response = await Admin.findOne({
-      where: { email: request.email, password: request.password },
-    });
-    response
-      ? res.send({ message: "Login to admin dashboard successful !" })
-      : res.send({ error: "Invalid credentials !" });
-  } catch (err) {
-    console.log(err);
-  }
+const login = async (req, res) => {
+  const { email, password } = req.body;
+  const user = {
+    email,
+    password,
+  };
+  const promise = Admin.findOne({
+    where: {
+      email: user.email,
+      password: user.password,
+    },
+  });
 };
 
 // function for admin password reset
@@ -59,5 +59,5 @@ const passwordReset = async (req, res) => {
 };
 
 module.exports.registerAdmin = registerAdmin;
-module.exports.adminSignIn = adminSignIn;
+module.exports.login = login;
 module.exports.passwordReset = passwordReset;
