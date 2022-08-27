@@ -1,15 +1,15 @@
-// const _ = require('lodash');
-// const glob = require('glob');
+const _ = require('lodash');
+const glob = require('glob');
 const path = require('path');
 
-function getGlobbedPaths(globPatterns, excludes) {
+function getGlobedPaths(globPatterns, excludes) {
     let urlRegex = new RegExp("^(?:[a-z]+:)?\/\/", "i");
 
     let output = [];
 
     if (_.isArray(globPatterns)) {
         globPatterns.forEach(function (globPattern) {
-            output = _.union(output, getGlobbedPaths(globPattern, excludes));
+            output = _.union(output, getGlobedPaths(globPattern, excludes));
         });
     } else if (_.isString(globPatterns)) {
         if (urlRegex.test(globPatterns)) {
@@ -39,10 +39,13 @@ function getGlobbedPaths(globPatterns, excludes) {
 }
 
 function getGlobalConfig() {
-    const assets = require(path.join(process.cwd(), 'src/assets/default.js')); 
+    const assets = require(path.join(process.cwd(), 'src/assets/default.js'));
+    
+    // const arr = getGlobedPaths(assets.routes);
+    // console.log(arr);
 
     const config = {
-        routes: assets.routes
+        routes: getGlobedPaths(assets.routes)
     }
 
     return config;
