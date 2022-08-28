@@ -1,20 +1,22 @@
 const {
   login,
-  adminSignUp,
+  signUp,
   adminForgotPassword,
   adminResetPassword,
   getSignedInUserProfile,
   logout,
 } = require("./admin.controller");
+const { registerSchema } = require("./register.schema");
+const validate = require("../core/middlewares/validate.middleware");
 
 module.exports = (app) => {
-  app.post("/admin/signin/", login);
+  app.post("api/admin/signin/", login);
 
-  app.post("/admin/signup/", adminSignUp);
+  app.post("/api/admins/signup/", validate(registerSchema), signUp);
 
-  app.post("/admin/forgot-password", adminForgotPassword);
+  app.post("api/admin/forgot-password", adminForgotPassword);
 
-  app.post("/admin/reset-password", adminResetPassword);
+  app.post("api/admin/reset-password", adminResetPassword);
 
   app.get("/api/users/profile", getSignedInUserProfile);
 

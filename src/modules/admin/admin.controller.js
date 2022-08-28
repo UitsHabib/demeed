@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const Admin = require("./admin.model");
+const registerSchema = require("./register.schema");
 
 const checkIfAdminExists = async (email) => {
   try {
@@ -63,21 +64,25 @@ const login = async (req, res) => {
   promise.then(success).catch(error);
 };
 
-const adminSignUp = async (req, res) => {
-  const admin = {
-    email: req.body.email,
-    password: req.body.password,
-  };
-  const existingAdmin = await checkIfAdminExists(admin.email);
-  if (!existingAdmin) {
-    try {
-      await Admin.create(admin);
-      res.send("Admin created successfully");
-    } catch (error) {
-      console.log(error);
+const signUp = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const [user, created] = await Admin.findOrCreate({
+      where: { email },
+      defaults: {
+        email,
+        password,
+      },
+    });
+
+    if (!created) {
+      return res.status(409).send("User already exists.");
     }
-  } else {
-    res.send("Admin with this email already exists");
+
+    res.status(201).send(user);
+  } catch (error) {
+    res.status(500).send("Internal server error.");
   }
 };
 
@@ -165,7 +170,7 @@ const logout = (req, res) => {
 };
 
 module.exports.login = login;
-module.exports.adminSignUp = adminSignUp;
+module.exports.signUp = signUp;
 module.exports.adminForgotPassword = adminForgotPassword;
 module.exports.adminResetPassword = adminResetPassword;
 module.exports.getSignedInUserProfile = getSignedInUserProfile;
