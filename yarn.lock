@@ -463,7 +463,7 @@
   "resolved" "https://registry.npmjs.org/is-property/-/is-property-1.0.2.tgz"
   "version" "1.0.2"
 
-"jsonwebtoken@^8.5.1":
+"jsonwebtoken@^8.2.0", "jsonwebtoken@^8.5.1":
   "integrity" "sha512-XjwVfRS6jTMsqYs0EsuJ4LGxXV14zQybNd4L2r0UvbVnSF9Af8x7p5MzbJ90Ioz/9TI41/hTCvznF/loiSzn8w=="
   "resolved" "https://registry.npmjs.org/jsonwebtoken/-/jsonwebtoken-8.5.1.tgz"
   "version" "8.5.1"
@@ -722,10 +722,37 @@
   "resolved" "https://registry.npmjs.org/parseurl/-/parseurl-1.3.3.tgz"
   "version" "1.3.3"
 
+"passport-jwt@^4.0.0":
+  "integrity" "sha512-BwC0n2GP/1hMVjR4QpnvqA61TxenUMlmfNjYNgK0ZAs0HK4SOQkHcSv4L328blNTLtHq7DbmvyNJiH+bn6C5Mg=="
+  "resolved" "https://registry.npmjs.org/passport-jwt/-/passport-jwt-4.0.0.tgz"
+  "version" "4.0.0"
+  dependencies:
+    "jsonwebtoken" "^8.2.0"
+    "passport-strategy" "^1.0.0"
+
+"passport-strategy@^1.0.0", "passport-strategy@1.x.x":
+  "integrity" "sha512-CB97UUvDKJde2V0KDWWB3lyf6PC3FaZP7YxZ2G8OAtn9p4HI9j9JLP9qjOGZFvyl8uwNT8qM+hGnz/n16NI7oA=="
+  "resolved" "https://registry.npmjs.org/passport-strategy/-/passport-strategy-1.0.0.tgz"
+  "version" "1.0.0"
+
+"passport@^0.6.0":
+  "integrity" "sha512-0fe+p3ZnrWRW74fe8+SvCyf4a3Pb2/h7gFkQ8yTJpAO50gDzlfjZUZTO1k5Eg9kUct22OxHLqDZoKUWRHOh9ug=="
+  "resolved" "https://registry.npmjs.org/passport/-/passport-0.6.0.tgz"
+  "version" "0.6.0"
+  dependencies:
+    "passport-strategy" "1.x.x"
+    "pause" "0.0.1"
+    "utils-merge" "^1.0.1"
+
 "path-to-regexp@0.1.7":
   "integrity" "sha512-5DFkuoqlv1uYQKxy8omFBeJPQcdoE07Kv2sferDCrAq1ohOU+MSDswDIbnx3YAM60qIOnYa53wBhXW0EbMonrQ=="
   "resolved" "https://registry.npmjs.org/path-to-regexp/-/path-to-regexp-0.1.7.tgz"
   "version" "0.1.7"
+
+"pause@0.0.1":
+  "integrity" "sha512-KG8UEiEVkR3wGEb4m5yZkVCzigAD+cVEJck2CzYZO37ZGJfctvVptVO192MwrtPhzONn6go8ylnOdMhKqi4nfg=="
+  "resolved" "https://registry.npmjs.org/pause/-/pause-0.0.1.tgz"
+  "version" "0.0.1"
 
 "pg-connection-string@^2.5.0":
   "integrity" "sha512-r5o/V/ORTA6TmUnyWZR9nCj1klXCO2CEKNRlVuJptZe85QuhFayC7WeMic7ndayT5IRIR0S0xFxFi2ousartlQ=="
@@ -972,7 +999,7 @@
   "resolved" "https://registry.npmjs.org/unpipe/-/unpipe-1.0.0.tgz"
   "version" "1.0.0"
 
-"utils-merge@1.0.1":
+"utils-merge@^1.0.1", "utils-merge@1.0.1":
   "integrity" "sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA=="
   "resolved" "https://registry.npmjs.org/utils-merge/-/utils-merge-1.0.1.tgz"
   "version" "1.0.1"

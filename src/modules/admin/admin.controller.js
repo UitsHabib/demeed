@@ -1,6 +1,6 @@
-const jwt = require("jsonwebtoken");
 const Admin = require("./admin.model");
-const registerSchema = require("./register.schema");
+const registerSchema = require("./admin.schema");
+const { generateAccessToken } = require("./admin.service");
 
 const checkIfAdminExists = async (email) => {
   try {
@@ -16,52 +16,34 @@ const checkIfAdminExists = async (email) => {
 };
 
 const login = async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const user = {
-    email,
-    password,
-  };
+    const user = {
+      email,
+      password,
+    };
 
-  const promise = Admin.findOne({
-    where: {
-      email: user.email,
-      password: user.password,
-    },
-  });
+    const admin = await Admin.findOne({
+      where: {
+        email: user.email,
+        password: user.password,
+      },
+    });
 
-  function success(user) {
-    console.log(user);
-    if (user) {
-      //create a token and send it
-      const access_token = jwt.sign(
-        {
-          id: user.id,
-        },
-        "jwt-secret",
-        {
-          expiresIn: "1h",
-          issuer: user.id.toString(),
-        }
-      );
-
-      res.cookie("access_token", access_token, {
-        httpOnly: true,
-        signed: true,
-      });
-
-      res.status(200).json(user);
-    } else {
-      res.status(404).send("User not found.");
+    if (!admin) {
+      return res.status(400).send("Invalid credentials.");
     }
-  }
 
-  function error(err) {
-    console.log(err);
+    res.cookie("access_token", generateAccessToken(admin), {
+      httpOnly: true,
+      signed: true,
+    });
+
+    res.status(200).json(admin);
+  } catch (error) {
     res.status(500).send("Internal server error.");
   }
-
-  promise.then(success).catch(error);
 };
 
 const signUp = async (req, res) => {
@@ -82,6 +64,7 @@ const signUp = async (req, res) => {
 
     res.status(201).send(user);
   } catch (error) {
+    console.log(error);
     res.status(500).send("Internal server error.");
   }
 };
@@ -126,42 +109,24 @@ const adminResetPassword = async (req, res) => {
   }
 };
 
-const getSignedInUserProfile = (req, res) => {
-  /*
-    1. Is the user logged in?
-    2. If logged in, send his profile
-    3. else send msg "Please login first to get your profile"
-  */
+const getSignedInUserProfile = async (req, res) => {
+  try {
+    const id = req.user.id;
 
-  const token = req.signedCookies["access_token"];
+    const admin = await Admin.findOne({
+      where: {
+        id,
+      },
+    });
 
-  if (!token) {
-    return res.status(400).send("Bad request.");
-  }
-  const payload = jwt.verify(token, "jwt-secret");
-  const { id } = payload;
-
-  const promise = Admin.findOne({
-    where: {
-      id,
-    },
-  });
-
-  function success(user) {
-    console.log(user);
-    if (user) {
-      res.status(200).json(user);
-    } else {
-      res.status(404).send("User not found.");
+    if (!admin) {
+      return res.status(404).send("User not found.");
     }
-  }
 
-  function error(err) {
-    console.log(err);
+    res.status(200).send(admin);
+  } catch (error) {
     res.status(500).send("Internal server error.");
   }
-
-  promise.then(success).catch(error);
 };
 
 const logout = (req, res) => {
