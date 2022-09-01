@@ -1,32 +1,24 @@
 const Admin = require("./admin.model.js");
-
-// check admin exsists or not for given email
-const checkAdminExsists = async (email) => {
-  try {
-    const adminExsists = await Admin.findOne({ where: { email: email } });
-    return adminExsists;
-  } catch (error) {
-    console.log(error);
-  }
-};
+const jwt = require("jsonwebtoken");
 
 // function for register admin in system.
-const registerAdmin = async (req, res) => {
-  const data = { ...req.body };
-  const checkAdmin = await checkAdminExsists(data.email);
-  if (!checkAdmin) {
-    try {
-      const registerAdmin = await Admin.create(data);
-      res.send({
-        message:
-          "Admin registration successful ! Please check email for active account.",
-        data: registerAdmin.dataValues,
-      });
-    } catch (error) {
-      console.log(error);
+const signUp = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const [admin, created] = await Admin.findOrCreate({
+      where: { email },
+      defaults: { email, password },
+    });
+    if (!created) {
+      return res.status(409).send({ message: "Admin Already Exsists" });
+    } else {
+      res
+        .status(201)
+        .send({ message: "Admin user created successfully", data: admin });
     }
-  } else {
-    res.send({ error: "An account already exsists with this email." });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ error: "Internal Server Error" });
   }
 };
 
@@ -43,21 +35,62 @@ const login = async (req, res) => {
       password: user.password,
     },
   });
-};
-
-// function for admin password reset
-const passwordReset = async (req, res) => {
-  const data = { ...req.body };
-  const response = await checkAdminExsists(data.email);
-  try {
-    response
-      ? res.send({ message: `Password reset link sent to ${response.email}` })
-      : res.send({ error: "Email not found " });
-  } catch (error) {
-    console.log(error);
+  function success(user) {
+    if (user) {
+      // create a token and send it
+      const access_token = jwt.sign(
+        { id: user.id, email: user.email },
+        "jwt-secret",
+        {
+          expiresIn: "1h",
+          issuer: user.id.toString(),
+        }
+      );
+      res.cookie("access_token", access_token, {
+        httpOnly: true,
+        signed: true,
+      });
+      user.dataValues.token = access_token;
+      res.status(200).send(user);
+    } else {
+      res.status(404).send({ message: "User not found" });
+    }
   }
+  function error(err) {
+    console.log(err);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+  promise.then(success).catch(error);
+};
+// logout function
+const logout = (req, res) => {
+  res.clearCookie("access_token");
+  res.send({ message: "Logout Successful !" });
 };
 
-module.exports.registerAdmin = registerAdmin;
+// get signed user profile
+const getSignedInUserProfile = (req, res) => {
+  const token = req.signedCookies["access_token"];
+  if (!token) {
+    res.status(400).send({ message: "Bad request !" });
+  }
+  const payload = jwt.verify(token, "jwt-secret");
+  const { id } = payload;
+  const promise = Admin.findOne({ where: { id } });
+  function success(user) {
+    if (!user) {
+      res.status(404).send({ message: "User not found !" });
+    } else {
+      res.status(200).send(user);
+    }
+  }
+  function error(err) {
+    req.status(500).send({ message: "Internal Server error !" });
+  }
+  promise.then(success).catch(error);
+};
+
+module.exports.signUp = signUp;
 module.exports.login = login;
-module.exports.passwordReset = passwordReset;
+module.exports.getSignedInUserProfile = getSignedInUserProfile;
+module.exports.logout = logout;

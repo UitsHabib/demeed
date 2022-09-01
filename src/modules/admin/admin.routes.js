@@ -1,11 +1,15 @@
 const {
-  registerAdmin,
+  signUp,
   login,
-  passwordReset,
+  logout,
+  getSignedInUserProfile,
 } = require("./admin.controller.js");
+const validate = require("../core/middlewares/validator.middleware.js");
+const { registerSchema } = require("./admin.schema.js");
 
 module.exports = (app) => {
-  app.post("/admin/register", registerAdmin);
-  app.post("/admin/login", login);
-  app.post("/admin/password/reset", passwordReset);
+  app.post("/api/admins/register", validate(registerSchema), signUp);
+  app.post("/api/admins/login", login);
+  app.get("/api/admins/profile", getSignedInUserProfile);
+  app.post("/api/admins/logout", logout);
 };
