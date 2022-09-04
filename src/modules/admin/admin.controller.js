@@ -1,6 +1,5 @@
 const Admin = require("./admin.model.js");
-const jwt = require("jsonwebtoken");
-
+const { generateAccessToken } = require("./admin.service.js");
 // function for register admin in system.
 const signUp = async (req, res) => {
   try {
@@ -22,45 +21,32 @@ const signUp = async (req, res) => {
   }
 };
 
-// function for singin in admin dashboard
+// function for login in admin dashboard
 const login = async (req, res) => {
-  const { email, password } = req.body;
-  const user = {
-    email,
-    password,
-  };
-  const promise = Admin.findOne({
-    where: {
-      email: user.email,
-      password: user.password,
-    },
-  });
-  function success(user) {
-    if (user) {
-      // create a token and send it
-      const access_token = jwt.sign(
-        { id: user.id, email: user.email },
-        "jwt-secret",
-        {
-          expiresIn: "1h",
-          issuer: user.id.toString(),
-        }
-      );
-      res.cookie("access_token", access_token, {
-        httpOnly: true,
-        signed: true,
-      });
-      user.dataValues.token = access_token;
-      res.status(200).send(user);
-    } else {
-      res.status(404).send({ message: "User not found" });
+  try {
+    const { email, password } = req.body;
+    const user = {
+      email,
+      password,
+    };
+    const admin = await Admin.findOne({
+      where: {
+        email: user.email,
+        password: user.password,
+      },
+    });
+    if (!admin) {
+      return res.send(400).send({ message: "Invalid Credentials" });
     }
-  }
-  function error(err) {
+    res.cookie("access_token", generateAccessToken(admin), {
+      httpOnly: true,
+      signed: true,
+    });
+    res.status(200).send(admin);
+  } catch (err) {
     console.log(err);
     res.status(500).send({ message: "Internal Server Error" });
   }
-  promise.then(success).catch(error);
 };
 // logout function
 const logout = (req, res) => {
@@ -69,28 +55,20 @@ const logout = (req, res) => {
 };
 
 // get signed user profile
-const getSignedInUserProfile = (req, res) => {
-  const token = req.signedCookies["access_token"];
-  if (!token) {
-    res.status(400).send({ message: "Bad request !" });
-  }
-  const payload = jwt.verify(token, "jwt-secret");
-  const { id } = payload;
-  const promise = Admin.findOne({ where: { id } });
-  function success(user) {
-    if (!user) {
-      res.status(404).send({ message: "User not found !" });
-    } else {
-      res.status(200).send(user);
+const getSignedInAdminProfile = async (req, res) => {
+  try {
+    const id = req.user.id;
+    const admin = await Admin.findOne({ where: { id } });
+    if (!admin) {
+      return res.status(404).send({ message: "Admin not found !" });
     }
-  }
-  function error(err) {
+    res.status(200).send(admin);
+  } catch (error) {
     req.status(500).send({ message: "Internal Server error !" });
   }
-  promise.then(success).catch(error);
 };
 
 module.exports.signUp = signUp;
 module.exports.login = login;
-module.exports.getSignedInUserProfile = getSignedInUserProfile;
+module.exports.getSignedInAdminProfile = getSignedInAdminProfile;
 module.exports.logout = logout;

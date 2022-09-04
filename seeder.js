@@ -14,19 +14,14 @@ function init() {
     }
   });
 
-  const user = require(path.join(
-    process.cwd(),
-    "src/modules/user/user.model.js"
-  ));
-  const DeliveryMan = require(path.join(
-    process.cwd(),
-    "src/modules/delivery/delivery.model.js"
-  ));
   const Admin = require(path.join(
     process.cwd(),
     "src/modules/admin/admin.model.js"
   ));
-
+  const Merchant = require(path.join(
+    process.cwd(),
+    "src/modules/merchant/merchant.model.js"
+  ));
   sequelize
     .sync()
     .then(() => console.log("success"))
