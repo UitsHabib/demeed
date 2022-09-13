@@ -3,7 +3,7 @@ const Entity = require("./entity.model");
 const getEntities = async (req, res) => {
     try{
         const entities = await Entity.findAll({});
-        
+
         if (!entities) {
             return res.status(404).send("Entity not found.");
         }
@@ -14,16 +14,5 @@ const getEntities = async (req, res) => {
         res.status(500).send("Internal server error.");
     }
 }
-
-// const postEntities = () => {
-//     try{
-//         const { users, permissions, profile } = req.body;
-
-
-//     }
-//     catch(error){
-
-//     }
-// }
 
 module.exports.getEntities = getEntities;
