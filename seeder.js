@@ -11,8 +11,10 @@ const init = () => {
         }
     });
 
-    const merchant = require(path.join(process.cwd(), "src/modules/merchant/merchant.routes"));
-    const service = require(path.join(process.cwd(), "src/modules/service/service.routes"));
+    require(path.join(process.cwd(), "src/modules/merchant/merchant.model"));
+    require(path.join(process.cwd(), "src/modules/service/service.model"));
+    require(path.join(process.cwd(), "src/modules/permission/permission.model"));
+    require(path.join(process.cwd(), "src/modules/permission/permission-service.model"));
 
     sequelize.sync()
         .then(() => console.log("success"))
