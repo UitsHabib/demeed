@@ -9,10 +9,14 @@ module.exports = () => {
     app.use(express.json());
     app.use(cookieParser("cookie_secret"));
 
-    const globalCongig = config.getGlobalConfig();
+    const globalConfig = config.getGlobalConfig();
 
-    globalCongig.routes.forEach(routePaht => {
-        require(path.resolve(routePaht))(app);
+    globalConfig.routes.forEach(routePath => {
+        require(path.resolve(routePath))(app);
+    });
+
+    globalConfig.strategies.forEach(strategyPath => {
+        require(path.resolve(strategyPath))(app);
     });
 
     return app;
