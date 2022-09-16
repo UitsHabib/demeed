@@ -14,13 +14,19 @@ function init() {
     }
   });
 
-  const Admin = require(path.join(
+  require(path.join(process.cwd(), "src/modules/admin/admin.model.js"));
+  require(path.join(process.cwd(), "src/modules/merchant/merchant.model.js"));
+  require(path.join(
     process.cwd(),
-    "src/modules/admin/admin.model.js"
+    "src/modules/permission/permission.model.js"
   ));
-  const Merchant = require(path.join(
+  require(path.join(
     process.cwd(),
-    "src/modules/merchant/merchant.model.js"
+    "src/modules/permission-set/permission-set.model.js"
+  ));
+  require(path.join(
+    process.cwd(),
+    "src/modules/permission-set/permission-set-all.model.js"
   ));
   sequelize
     .sync()

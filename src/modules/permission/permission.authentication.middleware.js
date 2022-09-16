@@ -1,5 +1,6 @@
 const passport = require("passport");
-const AdminStrategy = (req, res, next) => {
+
+const PermissionStrategy = (req, res, next) => {
   const auth = passport.authenticate("admin-jwt", async (error, admin) => {
     if (error) {
       return res.status(500).send("Internal Server Error");
@@ -24,4 +25,4 @@ const AdminStrategy = (req, res, next) => {
   auth(req, res, next);
 };
 
-module.exports = AdminStrategy;
+module.exports = PermissionStrategy;

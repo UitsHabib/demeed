@@ -20,7 +20,7 @@
     "nodemon": "^2.0.19",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
-    "sequelize": "^6.21.3",
+    "sequelize": "^6.21.6",
     "yup": "^0.32.11"
   }
 }
