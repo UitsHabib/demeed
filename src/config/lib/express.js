@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const config = require("../index");
 
 module.exports = () => {
@@ -8,7 +9,9 @@ module.exports = () => {
 
     const globalConfig = config.getGlobalConfig();
 
-    //here write your getGlobalCongig property.
+    globalConfig.routes.forEach(routePath => {
+        require(path.resolve(routePath))(app);
+    })
 
     return app;
 };

@@ -5,13 +5,13 @@ const init = () => {
 
     sequelize.query("CREATE DATABASE IF NOT EXISTS blog", (err, res) => {
         if (err) {
-        console.log(err);
+            console.log(err);
         } else {
-        console.log(res);
+            console.log(res);
         }
     });
 
-    //here import your model
+    require(path.join(process.cwd(), "src/modules/admin/admin.model.js"));
 
     sequelize.sync()
         .then(() => console.log("success"))

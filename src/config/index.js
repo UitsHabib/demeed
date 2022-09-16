@@ -42,7 +42,7 @@ const getGlobalConfig = () => {
     const assets = require(path.join(process.cwd(), "src/config/assets/default.js"));
 
     const config = {
-        //here right your key and value with getGlobbedPaths function
+        routes: getGlobbedPaths(assets.routes)
     };
 
     return config;
