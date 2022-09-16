@@ -1,0 +1,28 @@
+{
+  "name": "demeed",
+  "version": "1.0.0",
+  "description": "```\r git init\r git remote add origin <link>\r git add .\r git status\r git commit -m \"Add First Commit\"\r git branch\r git branch <your name>/first-project\r git switch <your name>/first-project\r git push origin <your name>/first-project\r git log --oneline",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index",
+    "seed": "node seeder"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UitsHabib/demeed.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/UitsHabib/demeed/issues"
+  },
+  "homepage": "https://github.com/UitsHabib/demeed#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "glob": "^8.0.3",
+    "lodash": "^4.17.21",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.22.0"
+  }
+}
