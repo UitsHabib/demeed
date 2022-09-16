@@ -1,36 +1,82 @@
 const Admin = require("./admin.model");
+const { generateAccessToken } = require("./admin.service");
 
-const getAdmins = (req, res) => {
-  Admin.findAll()
-    .then((admins) => res.send(admins))
-    .catch((err) => console.log(err));
-};
+const signUp = async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-const createAdmin = (req, res) => {
-  const newAdmin = {
-    email: req.body.email,
-    password: req.body.password,
-  };
+    const [admin, created] = await Admin.findOrCreate({
+      where: { email },
+      defaults: { email, password },
+    });
 
-  Admin.create(newAdmin)
-    .then((admin) => res.send(admin))
-    .catch((err) => console.log(err));
-};
-
-const loginAdmin = async (req, res) => {
-  const email = req.body.email;
-  const password = req.body.password;
-
-  const admin = await Admin.findOne({ where: { email: email } });
-  if (admin) {
-    if (admin.dataValues.password === password) {
-      res.send("Welcome to your dashboard");
-    } else {
-      res.send("Your password is not match");
+    if (!created) {
+      return res.status(409).send("Admin already exists.");
     }
+
+    res.status(201).send(admin);
+  } catch (err) {
+    res.status(500).send("Internal server error.");
   }
 };
 
-module.exports.getAdmins = getAdmins;
-module.exports.createAdmin = createAdmin;
-module.exports.loginAdmin = loginAdmin;
+const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const admin = {
+      email,
+      password,
+    };
+
+    const findAdmin = await Admin.findOne({
+      where: {
+        email: admin.email,
+        password: admin.password,
+      },
+    });
+
+    if (!findAdmin) {
+      res.status(400).send("Invaild Credentials");
+    }
+
+    res.cookie("access_token", generateAccessToken(findAdmin), {
+      httpOnly: true,
+      signed: true,
+    });
+    
+    res.status(200).json(findAdmin);
+  } catch (error) {
+    res.status(500).send("Internal server error");
+  }
+};
+
+const getLoginProfile = async (req, res) => {
+  try {
+    const id = req.user.id;
+    
+    const admin = await Admin.findOne({
+      where: {
+        id,
+      },
+    });
+
+    if (!admin) {
+      return res.status(401).send("Admin not found");
+    }
+
+    res.status(200).json(admin);
+  } catch (error) {
+    res.status(500).send("Internal server error");
+  }
+};
+
+const logout = (req, res) => {
+  res.clearCookie("access_token");
+  res.send("Logged out.");
+};
+
+module.exports.signUp = signUp;
+module.exports.login = login;
+module.exports.getLoginProfile = getLoginProfile;
+module.exports.logout = logout;
