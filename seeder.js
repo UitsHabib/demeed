@@ -13,6 +13,8 @@ const init = () => {
 
     require(path.join(process.cwd(), "src/modules/admin/admin.model.js"));
     require(path.join(process.cwd(), "src/modules/service/service.model.js"));
+    require(path.join(process.cwd(), "src/modules/permission/permission.model.js"));
+    require(path.join(process.cwd(), "src/modules/permission/permission-service.model.js"));
 
     sequelize.sync()
         .then(() => console.log("success"))
