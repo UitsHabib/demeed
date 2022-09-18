@@ -21,7 +21,7 @@ const createPermissionSet = async (req, res) => {
   }
 };
 
-//Get All Permission Sets
+// Get All Permission Sets
 const getPermissionSets = async (req, res) => {
   try {
     const permsissionSets = await PermissionSet.findAll({
