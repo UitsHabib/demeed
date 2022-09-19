@@ -11,14 +11,13 @@ const Permission = sequelize.define(
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
     },
-    permission_name: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    service_id: {
+    service_ids: {
       type: DataTypes.STRING,
-    }
-    
+    },
   },
   {
     tableName: "permissions",

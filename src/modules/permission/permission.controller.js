@@ -2,19 +2,20 @@ const Permission = require("./permission.model");
 
 const createPermission = async (req, res) => {
   try {
-    const { permission_name, service_id } = req.body;
+    const { name, service_ids } = req.body;
 
     const [permission, created] = await Permission.findOrCreate({
-      where: { permission_name, },
-      defaults: { permission_name, service_id },
+      where: { name },
+      defaults: { name, service_ids },
     });
 
     if (!created) {
-      return res.status(409).send("The permission already exists.");
+      return res.status(400).send("The permission already exists.");
     }
 
     res.status(201).json(permission);
   } catch (err) {
+    console.log(err);
     res.status(500).send("Internal server error.");
   }
 };
