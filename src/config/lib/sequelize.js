@@ -1,10 +1,10 @@
 const {Sequelize}=require("sequelize");
 
-const sequelize=new Sequelize("users","root","",{
+const sequelize=new Sequelize("blog","root","",{
     host:"localhost",
     dialect:"mysql",
     sync:true,
     logging:false
 });
 
-module.exports=sequelize;
+module.exports = sequelize;

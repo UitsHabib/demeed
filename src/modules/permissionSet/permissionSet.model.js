@@ -8,8 +8,8 @@ const sequelize = require(path.join(
 
 const { DataTypes } = require("sequelize");
 
-const Admin = sequelize.define(
-  "admins",
+const Permission = sequelize.define(
+  "permissions-sets",
   {
     id: {
       allowNull: false,
@@ -17,22 +17,27 @@ const Admin = sequelize.define(
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
     },
-    email: {
-      type: DataTypes.STRING,
-    },
-    password: {
-      type: DataTypes.STRING,
-    },
+
     role: {
       type: DataTypes.STRING,
     },
+    
+    permission_id: {
+      type: DataTypes.STRING,
+    },
+
+    service_id: {
+      type: DataTypes.STRING,
+    },
+    
   },
+  
   {
-    tableName: "admins",
+    tableName: "permissions-sets",
     timestamps: false,
     createdAt: 'created_at',
     updatedAt: 'updated_at',
   }
 );
 
-module.exports = Admin;
+module.exports = Permission;

@@ -8,8 +8,8 @@ const sequelize = require(path.join(
 
 const { DataTypes } = require("sequelize");
 
-const Admin = sequelize.define(
-  "admins",
+const User = sequelize.define(
+  "users",
   {
     id: {
       allowNull: false,
@@ -28,11 +28,11 @@ const Admin = sequelize.define(
     },
   },
   {
-    tableName: "admins",
+    tableName: "users",
     timestamps: false,
     createdAt: 'created_at',
     updatedAt: 'updated_at',
   }
 );
 
-module.exports = Admin;
+module.exports = User;

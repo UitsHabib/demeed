@@ -1,4 +1,6 @@
 const Admin = require("./admin.model");
+const jwt = require("jsonwebtoken");
+const { generateAccessToken } = require("./admin.service");
 
 const findExistingAdmin = async (email) => {
   try {
@@ -21,9 +23,9 @@ const findExistingAdmin = async (email) => {
   }
 };
 
-const adminSignUp = async (req, res) => {
+const signUp = async (req, res) => {
     try {
-        const {email,password}=req.body;
+        const {email,password,role}=req.body;
 
         const existingAdmin=await findExistingAdmin(email);
 
@@ -32,31 +34,41 @@ const adminSignUp = async (req, res) => {
         }else{
             await Admin.create({
                 email,
-                password
+                password,
+                role
             });
             
-            res.send("A new Admin has been created successfully");
+            res.status(201).send("A new Admin has been created successfully");
         }
     } catch (error) {
         console.log(error);
+        res.status(500).send("Internal server error")
     }
 };
 
-const adminSignIn = async (req, res) => {
+const signIn = async (req, res) => {
   try {
     const {email,password}=req.body;
 
-    const existingAdmin=await findExistingAdmin(email); 
-
-    if (existingAdmin.email && existingAdmin.password) {
-        if (existingAdmin.email==email && existingAdmin.password==password) {
-            res.send("Admin has successfully logged in");
-        }else{
-            res.send("Invalid credentials");
+    const admin=await Admin.findOne({
+        where:{
+            email,
+            password
         }
+    });
+
+    if (!admin) {
+        res.status(400).send("Invalid Credentials")
     }
+
+    res.cookie("access_token",generateAccessToken(admin),{
+        httpOnly: true,
+        signed: true
+    });
+
+    res.status(200).send(admin)
   } catch (error) {
-    console.log(error);
+    res.status(500).send("Internal Server Error.")
   }
 };
 
@@ -105,7 +117,22 @@ const adminResetPassword = async (req, res) => {
   
 };
 
-module.exports.adminSignIn = adminSignIn;
-module.exports.adminSignUp = adminSignUp;
+const getSignedInUser=async(req,res)=>{
+    try {
+        const admin=await Admin.findOne({
+            where:{
+                id: req.user.id
+            }
+        });
+        
+        res.status(200).send(admin)
+    } catch (error) {
+        res.status(500).send("Internal Server Error")
+    }
+}
+
+module.exports.getSignedInUser = getSignedInUser;
+module.exports.signIn = signIn;
+module.exports.signUp = signUp;
 module.exports.adminForgotPassword = adminForgotPassword;
 module.exports.adminResetPassword = adminResetPassword;
