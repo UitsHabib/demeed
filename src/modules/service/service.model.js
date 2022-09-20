@@ -19,7 +19,7 @@ const Service = sequelize.define(
     }
   },
   {
-    tableName: "entities",
+    tableName: "services",
     timestamps: false,
     createdAt: 'created_at',
     updatedAt: 'updated_at',
