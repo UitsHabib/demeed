@@ -5,8 +5,8 @@ const sequelize = require(path.join(
 ));
 const { DataTypes } = require("sequelize");
 
-const Entity = sequelize.define(
-  "entities",
+const Service = sequelize.define(
+  "services",
   {
     id: {
       allowNull: false,
@@ -14,15 +14,9 @@ const Entity = sequelize.define(
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
     },
-    users: {
+    name: {
       type: DataTypes.STRING,
-    },
-    permissions: {
-      type: DataTypes.STRING,
-    },
-    profile: {
-      type: DataTypes.STRING,
-    },
+    }
   },
   {
     tableName: "entities",
@@ -32,4 +26,4 @@ const Entity = sequelize.define(
   }
 );
 
-module.exports = Entity;
+module.exports = Service;

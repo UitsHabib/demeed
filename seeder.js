@@ -19,9 +19,9 @@ function init() {
     "src/modules/admin/admin.model.js"
   ));
 
-  const entity = require(path.join(
+  const service = require(path.join(
     process.cwd(),
-    "src/modules/entity/entity.model.js"
+    "src/modules/service/service.model.js"
   ));
 
   sequelize
