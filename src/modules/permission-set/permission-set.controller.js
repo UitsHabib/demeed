@@ -1,20 +1,12 @@
 const PermissionSet = require("./permission-set.model");
-const PermissionSetAll = require("./permission-set-all.model");
 const Permission = require("../permission/permission.model");
-
-// Create a Permission Set
+// Create Permission Sets
 const createPermissionSet = async (req, res) => {
   try {
     const { name, permissionIds } = req.body;
-    const permissionSet = await PermissionSet.create({ name });
-    permissionIds.forEach(async (pId) => {
-      const permissionSetId = permissionSet.id;
-      await PermissionSetAll.create({
-        permission_set_id: permissionSetId,
-        permission_id: pId,
-      });
-    });
-    res.status(200).send({ success: "Permission Set created !" });
+    const permissionSet = await PermissionSet.create({ name: name });
+    permissionSet.setPermissions(permissionIds);
+    res.status(201).send({ success: "Added Permission Set" });
   } catch (error) {
     console.log(error);
     res.status(500).send("Internal Server Error");
@@ -22,30 +14,23 @@ const createPermissionSet = async (req, res) => {
 };
 
 // Get All Permission Sets
-const getPermissionSets = async (req, res) => {
+const getAllPermissionSet = async (req, res) => {
   try {
-    const permsissionSets = await PermissionSet.findAll({
-      include: [
-        {
-          model: PermissionSetAll,
-          as: "permission_sets_all",
-          attributes: { exclude: ["permission_set_id", "id"] },
-          include: [
-            {
-              model: Permission,
-              as: "permissions",
-              attributes: { exclude: ["id"] },
-            },
-          ],
+    const permissionSets = await PermissionSet.findAll({
+      include: {
+        model: Permission,
+        as: "Permissions",
+        attributes: ["name"],
+        through: {
+          attributes: [],
         },
-      ],
+      },
     });
-    res.status(200).send(permsissionSets);
+    res.status(200).send(permissionSets);
   } catch (error) {
     console.log(error);
-    res.status(500).send("Internal Server Error.");
+    res.status(500).send("Internal Server Error");
   }
 };
-
 module.exports.createPermissionSet = createPermissionSet;
-module.exports.getPermissionSets = getPermissionSets;
+module.exports.getAllPermissionSet = getAllPermissionSet;

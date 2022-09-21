@@ -4,7 +4,7 @@ const sequelize = require(path.join(
   "/src/config/lib/sequelize.js"
 ));
 const { DataTypes } = require("sequelize");
-
+const Permission = require("../permission/permission.model");
 const PermissionSet = sequelize.define(
   "permission_sets",
   {
@@ -22,9 +22,12 @@ const PermissionSet = sequelize.define(
   {
     tableName: "permission_sets",
     timestamps: false,
-    createdAt: "created_at",
-    updatedAt: "updated_at",
   }
 );
 
+PermissionSet.belongsToMany(Permission, {
+  as: "Permissions",
+  through: "permissions_set_all",
+  timestamps: false,
+});
 module.exports = PermissionSet;

@@ -24,10 +24,6 @@ function init() {
     process.cwd(),
     "src/modules/permission-set/permission-set.model.js"
   ));
-  require(path.join(
-    process.cwd(),
-    "src/modules/permission-set/permission-set-all.model.js"
-  ));
   sequelize
     .sync()
     .then(() => console.log("success"))
