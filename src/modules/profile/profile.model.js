@@ -22,6 +22,10 @@ const Profile = sequelize.define(
       allowNull: true,
       type: DataTypes.STRING,
     },
+    type: {
+      type: DataTypes.ENUM("custom", "standard"),
+      defaultValue: "custom",
+    },
     created_by: {
       type: DataTypes.UUID,
     },

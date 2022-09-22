@@ -23,7 +23,7 @@ const User = sequelize.define(
       type: DataTypes.STRING,
     },
     profile_id: {
-      allowNull: false,
+      //allowNull: false,
       type: DataTypes.STRING,
     },
     created_by: {
