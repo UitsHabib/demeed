@@ -44,6 +44,11 @@ function init() {
     "src/modules/profile/profile.model.js"
   ));
 
+  const PermissionService = require(path.join(
+    process.cwd(),
+    "src/modules/permission-service/permission-service.model.js"
+  ));
+
   sequelize
     .sync()
     .then(() => console.log("success"))

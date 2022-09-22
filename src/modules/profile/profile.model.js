@@ -14,8 +14,19 @@ const Profile = sequelize.define(
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
     },
-    permissionSet: {
+    title: {
+      allowNull: false,
       type: DataTypes.STRING,
+    },
+    description: {
+      allowNull: true,
+      type: DataTypes.STRING,
+    },
+    created_by: {
+      type: DataTypes.UUID,
+    },
+    updated_by: {
+      type: DataTypes.UUID,
     },
   },
   {

@@ -15,13 +15,22 @@ const User = sequelize.define(
       defaultValue: DataTypes.UUIDV4,
     },
     email: {
+      allowNull: false,
       type: DataTypes.STRING,
     },
     password: {
+      allowNull: false,
       type: DataTypes.STRING,
     },
-    profile: {
+    profile_id: {
+      allowNull: false,
       type: DataTypes.STRING,
+    },
+    created_by: {
+      type: DataTypes.UUID,
+    },
+    updated_by: {
+      type: DataTypes.UUID,
     },
   },
   {

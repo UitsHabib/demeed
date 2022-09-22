@@ -14,11 +14,19 @@ const Permission = sequelize.define(
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
     },
-    services: {
+    title: {
+      allowNull: false,
       type: DataTypes.STRING,
     },
-    name: {
-      type: DataTypes.STRING,
+    type: {
+      type: DataTypes.ENUM("custom", "standard"),
+      defaultValue: "custom",
+    },
+    created_by: {
+      type: DataTypes.UUID,
+    },
+    updated_by: {
+      type: DataTypes.UUID,
     },
   },
   {

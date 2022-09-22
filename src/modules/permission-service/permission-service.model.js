@@ -5,8 +5,8 @@ const sequelize = require(path.join(
 ));
 const { DataTypes } = require("sequelize");
 
-const Service = sequelize.define(
-  "services",
+const PermissionService = sequelize.define(
+  "permission-services",
   {
     id: {
       allowNull: false,
@@ -14,12 +14,12 @@ const Service = sequelize.define(
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
     },
-    title: {
+    permission_id: {
       allowNull: false,
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
     },
-    parent_id: {
-      allowNull: true,
+    service_id: {
+      allowNull: false,
       type: DataTypes.UUID,
     },
     created_by: {
@@ -30,11 +30,20 @@ const Service = sequelize.define(
     },
   },
   {
-    tableName: "services",
+    tableName: "PermissionServices",
     timestamps: false,
     createdAt: "created_at",
     updatedAt: "updated_at",
   }
 );
 
-module.exports = Service;
+Permission.hasMany(PermissionService, {
+  as: "permission_service",
+  foreignKey: "permission_id",
+});
+PermissionService.belongsTo(Service, {
+  as: "service",
+  foreignKey: "service_id",
+});
+
+module.exports = PermissionService;
