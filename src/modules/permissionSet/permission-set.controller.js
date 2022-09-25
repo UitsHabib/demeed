@@ -1,6 +1,6 @@
 const PermissionSet = require("./permission-set.model");
-const PermissionSetWithPermission = require("./permission-setWithPermission.model");
 const Permission = require("../permission/permission.model");
+const PermissionSetWithPermission = require("./permission-setWithPermission.model");
 
 const getPermissionSet = async (req, res) => {
     try {
@@ -36,7 +36,7 @@ const createPermissionSet = async (req, res) => {
             defaults: { name, description }
         });
 
-        if(!created) return res.status(409).send("Already created.");
+        if (!created) return res.status(409).send("Already created.");
 
         await Promise.all(permissions.map(async permission_id => {
             const permissionSet_id = permissionSet.id;
@@ -70,25 +70,25 @@ const createPermissionSet = async (req, res) => {
 
 const updatePermissionSet = async (req, res) => {
     try {
-        const { name, description, permissions } = req.body;
         const { id } = req.params;
+        const { name, description, permissions } = req.body;
 
-        const permissionSet = await PermissionSet.findOne({ where: { id }});
+        const permissionSet = await PermissionSet.findOne({ where: { id } });
 
-        if(!permissionSet) return res.status(404).send("Not foun!");
+        if (!permissionSet) return res.status(404).send("Permission set not found!");
 
-        if(name) await permissionSet.update({ name });
+        if (name) await permissionSet.update({ name });
 
-        if(description) await permissionSet.update({ description });
+        if (description) await permissionSet.update({ description });
 
-        if(permissions) {
-            await PermissionSetWithPermission.destroy({ where: { permissionSet_id: id }});
+        if (permissions) {
+            await PermissionSetWithPermission.destroy({ where: { permissionSet_id: id } });
 
-            permissions.map(async permission_id => {
+            await Promise.all(permissions.map(async permission_id => {
                 const permissionSet_id = permissionSet.id;
     
                 await PermissionSetWithPermission.create({ permissionSet_id, permission_id });
-            });
+            }));
         };
 
         const permissionSetWithPermissions = await PermissionSet.findOne({
@@ -119,10 +119,28 @@ const deletePermissionSet = async (req, res) => {
     try {
         const { id } = req.params;
 
+        const permissionSetWithPermissions = await PermissionSet.findOne({
+            where: { id },
+            include: [
+                {
+                    model: PermissionSetWithPermission,
+                    as: "permission_set_with_permission",
+                    include: [
+                        {
+                            model: Permission,
+                            as: "permission"
+                        }
+                    ]
+                }
+            ]
+        });
+
+        if (!permissionSetWithPermissions) return res.status(404).send("Permission set not found!");
+
         await PermissionSet.destroy({ where: { id } });
         await PermissionSetWithPermission.destroy({ where: { permissionSet_id: id } });
 
-        res.status(200).send("Delete permission.")
+        res.status(200).send(permissionSetWithPermissions);
     } catch (err) {
         console.log(err);
 
