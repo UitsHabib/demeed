@@ -4,8 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "nodemon index",
     "seed": "node seeder.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UitsHabib/demeed.git"
   },
   "keywords": [],
   "author": "",

@@ -1,5 +1,6 @@
 const path = require("path");
 const express = require("express");
+const path = require("path");
 const config = require("../index");
 const cookieParser = require("cookie-parser");
 
@@ -11,9 +12,9 @@ module.exports = () => {
 
   const globalConfig = config.getGlobalConfig();
 
-  globalConfig.routes.forEach((routePath) => {
-    require(path.resolve(routePath))(app);
-  });
+    globalConfig.routes.forEach(routePath => {
+        require(path.resolve(routePath))(app);
+    })
 
   globalConfig.strategies.forEach((strategyPath) => {
     require(path.resolve(strategyPath))();
