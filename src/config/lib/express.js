@@ -1,9 +1,16 @@
 const path = require("path");
 const express = require("express");
 const config = require("../index");
+<<<<<<< HEAD
 const cookieParser = require("cookie-parser");
 
 module.exports = () => {
+=======
+const cookieParser = require("cookie-parser")
+
+module.exports = () => {
+
+>>>>>>> d913a46 (Add create Permission)
   const app = express();
 
   app.use(express.json());
