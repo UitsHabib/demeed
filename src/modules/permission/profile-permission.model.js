@@ -30,5 +30,7 @@ const ProfilePermission = sequelize.define(
 );
 
 ProfilePermission.belongsTo(Permission, { as: "permission", foreignKey: "permission_id" });
+ProfilePermission.belognsTo(Permission, { as: "permission", foreignKey: "permission_id" });
 
 module.exports = ProfilePermission;
+

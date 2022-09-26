@@ -81,6 +81,7 @@ const adminForgotPassword = async (req, res) => {
 };
 
 const adminResetPassword = async (req, res) => {
+  
   const { email, password, confirmPassword } = req.body;
 
   const existingAdmin = await checkIfAdminExists(email);
@@ -106,7 +107,9 @@ const adminResetPassword = async (req, res) => {
     } else {
       res.send("Passwords didn't match.");
     }
-  }
+
+    res.status(200).json(admin);
+  } 
 };
 
 const getSignedInUserProfile = async (req, res) => {

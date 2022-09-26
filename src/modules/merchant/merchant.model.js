@@ -1,10 +1,10 @@
 const path = require("path");
-const sequelize = require(path.join(process.cwd(), "src/config/lib/sequelize"));
+const sequelize = require(path.join(process.cwd(),"/src/config/lib/sequelize"));
 
 const { DataTypes } = require("sequelize");
 
-const Admin = sequelize.define(
-  "admins",
+const User = sequelize.define(
+  "merchants",
   {
     id: {
       allowNull: false,
@@ -20,11 +20,11 @@ const Admin = sequelize.define(
     },
   },
   {
-    tableName: "admins",
+    tableName: "merchants",
     timestamps: false,
-    createdAt: 'created_at',
-    updatedAt: 'updated_at',
+    createdAt: "created_at",
+    updateAt: "updated_at",
   }
 );
 
-module.exports = Admin;
+module.exports = User;
