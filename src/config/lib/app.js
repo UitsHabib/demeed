@@ -1,11 +1,11 @@
 module.exports.start = () => {
-  const app = require("./express")();
+	require("dotenv").config();
+	const app = require("./express")();
+	const { PORT } = process.env;
 
-  const port = 5000;
-
-  app.listen(port, () => {
-    console.log(`Running on the ${port}...`);
-  });
+	app.listen(PORT, () => {
+		console.log(`Running on the ${PORT}...`);
+	});
 };
 
 /*
