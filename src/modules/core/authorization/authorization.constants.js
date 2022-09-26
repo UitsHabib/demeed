@@ -1,8 +1,8 @@
 const Services = {
-	MANAGE_USER: "manage-users",
-	MANAGE_PROFILE: "manage-profiles",
-	MANAGE_PERMISSION: "manage-permissions",
-	MANAGE_SHOP: "manage-shops",
-};
+    MANAGE_USER: "Manage-users",
+    MANAGE_PROFILE: "Manage-profiles",
+    MANAGE_PERMISSION: "Manage-permissions",
+    MANAGE_SHOP: "Manage-shops"
+}
 
 module.exports = { Services };
