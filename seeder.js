@@ -4,7 +4,7 @@ const async = require("async");
 async function init() {
 	const sequelize = require(path.join(process.cwd(), "/src/config/lib/sequelize.js"));
 
-	sequelize.query("CREATE DATABASE IF NOT EXISTS blog", (err, res) => {
+	sequelize.query("CREATE DATABASE IF NOT EXISTS demeed", (err, res) => {
 		if (err) {
 			console.log(err);
 		} else {
