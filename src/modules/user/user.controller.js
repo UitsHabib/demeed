@@ -34,37 +34,6 @@ const login = async (req, res) => {
 	}
 };
 
-const signUp = async (req, res) => {
-	try {
-		const { email, password } = req.body;
-
-		const [user, created] = await User.findOrCreate({
-			where: { email },
-			defaults: {
-				email,
-				password,
-			},
-		});
-
-		if (!created) {
-			return res.status(409).send("User already exists.");
-		}
-
-		const options = {
-			toAddresses: [email],
-			templateUrl: "src/config/lib/email-service/templates/email.handlebars",
-			subject: "Registration Confirmation",
-			data: {},
-		};
-
-		EmailService.send(options);
-		res.status(201).send(user);
-	} catch (error) {
-		console.log(error);
-		res.status(500).send("Internal server error.");
-	}
-};
-
 const getSignedInUserProfile = async (req, res) => {
 	try {
 		const id = req.user.id;
@@ -90,39 +59,90 @@ const logout = (req, res) => {
 	res.send("Logged out.");
 };
 
-const setProfile = async (req, res) => {
-	try {
-		const { userId, profile } = req.body;
+const getUsers = async (req, res) => {
+    try {
+        const users = await User.findAll();
 
-		const [updatedUser] = await User.update(
-			{
-				profile,
-			},
-			{
-				where: {
-					id: userId,
-				},
-			}
-		);
+        res.status(200).send(users);
+    } catch (err) {
+        console.log(err);
 
-		if (!updatedUser) {
-			return res.status(404).send("User not found.");
-		}
+        res.status(500).send("Internal server error.")
+    };
+};
 
-		res.status(201).send(updatedUser);
-	} catch (error) {
-		console.log(error);
-		res.status(500).send("Internal server error.");
-	}
+const createUser = async (req, res) => {
+    try {
+        const { name, email, password } = req.body;
+
+        const [ user, created ] = await User.findOrCreate({
+            where: { email },
+            defaults: { name, email, password }
+        });
+
+        if(!created) return res.status(409).send("User is already created.");
+
+		const options = {
+			toAddresses: [email],
+			templateUrl: "src/config/lib/email-service/templates/email.handlebars",
+			subject: "Registration Confirmation",
+			data: {},
+		};
+
+		EmailService.send(options);
+
+        return res.status(201).send(user);
+    } catch (err) {
+        console.log(err);
+
+        res.status(500).send("Internal server error.")
+    };
+};
+
+const updateUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, password } = req.body;
+
+        const user = await User.findOne({ where: { id } });
+
+        if (!user) return res.status(409).send("User was not found!");
+
+        if (name) await user.update({ name });
+        
+        if (password) await user.update({ password });
+
+        return res.status(201).send(user);
+    } catch (err) {
+        console.log(err);
+
+        res.status(500).send("Internal server error.")
+    };
 };
 
 const deleteUser = async (req, res) => {
-	return res.send("deleted");
+    try {
+        const { id } = req.params;
+
+        const user = await User.findOne({ where: { id } });
+
+        if (!user) return res.status(409).send("User was not found!");
+
+        await User.destroy({ where: { id } });
+
+        return res.status(201).send(user);
+    } catch (err) {
+        console.log(err);
+
+        res.status(500).send("Internal server error.")
+    };
 };
 
-module.exports.login = login;
-module.exports.signUp = signUp;
-module.exports.getSignedInUserProfile = getSignedInUserProfile;
-module.exports.logout = logout;
-module.exports.setProfile = setProfile;
+module.exports.getUsers = getUsers;
+module.exports.createUser = createUser;
+module.exports.updateUser = updateUser;
 module.exports.deleteUser = deleteUser;
+module.exports.login = login;
+module.exports.logout = logout;
+module.exports.getSignedInUserProfile = getSignedInUserProfile;
+

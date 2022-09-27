@@ -1,26 +1,12 @@
-const {
-  login,
-  signUp,
-  getSignedInUserProfile,
-  logout,
-  setProfile,
-  deleteUser,
-} = require("./user.controller");
-const { registerSchema, loginSchema } = require("./user.schema");
-const validate = require("../core/middlewares/validate.middleware");
-const UserStrategy = require("./user.authentication.middleware");
-const PermissionStrategy = require("./user.permission.middleware");
+const validate = require("../core/middleware/validator.middleware");
+const { userSchema, userUpdateSchema } = require("./user.schema");
+const { getUsers, createUser, updateUser } = require("./user.controller");
 
 module.exports = (app) => {
-  app.post("/api/users/login/", validate(loginSchema), login);
+    app.route("/api/users")
+        .get(getUsers)
+        .post(validate(userSchema), createUser);
 
-  app.post("/api/users/signup/", validate(registerSchema), signUp);
-
-  app.get("/api/users/profile", UserStrategy, getSignedInUserProfile);
-
-  app.post("/api/users/logout", logout);
-
-  app.patch("/api/users/profile", setProfile);
-
-  app.delete("/api/user", UserStrategy, PermissionStrategy(19), deleteUser);
+    app.route("/api/users/:id")
+        .patch(validate(userUpdateSchema), updateUser)
 };
