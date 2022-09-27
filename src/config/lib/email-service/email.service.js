@@ -1,9 +1,10 @@
 const path = require("path");
 const handlebars = require("nodemailer-express-handlebars");
 const nodemailer = require("nodemailer");
+const nodeCache = require(path.join(process.cwd(), "src/config/lib/nodecache"));
 
-require("dotenv").config();
-const { USER_EMAIL, USER_PASSWORD } = process.env;
+const USER_EMAIL = nodeCache.getValue("USER_EMAIL");
+const USER_PASSWORD = nodeCache.getValue("USER_PASSWORD");
 
 const transporter = nodemailer.createTransport({
 	service: "gmail",
@@ -14,32 +15,36 @@ const transporter = nodemailer.createTransport({
 });
 
 function send(options) {
-	const handlebarOptions = {
-		viewEngine: {
-			partialsDir: path.join(process.cwd(), options.templateUrl),
-			defaultLayout: false,
-		},
-		viewPath: path.join(process.cwd(), options.templateUrl),
-	};
+	try {
+		const handlebarOptions = {
+			viewEngine: {
+				partialsDir: path.join(path.resolve(options.templateUrl)),
+				defaultLayout: false,
+			},
+			viewPath: path.join(path.resolve(options.templateUrl)),
+		};
 
-	transporter.use("compile", handlebars(handlebarOptions));
+		transporter.use("compile", handlebars(handlebarOptions));
 
-	const mailOptions = {
-		from: USER_EMAIL,
-		to: options.toAddresses,
-		subject: options.subject,
-		template: "email",
-		context: {
-			project: "DEMEED",
-		},
-	};
+		const mailOptions = {
+			from: USER_EMAIL,
+			to: options.toAddresses,
+			subject: options.subject,
+			template: "email",
+			context: {
+				project: "DEMEED",
+			},
+		};
 
-	transporter.sendMail(mailOptions, function (error, info) {
-		if (error) {
-			return console.log(error);
-		}
-		console.log("Message sent: " + info.response);
-	});
+		transporter.sendMail(mailOptions, function (error, info) {
+			if (error) {
+				return console.log(error);
+			}
+			console.log("Message sent: " + info.response);
+		});
+	} catch (error) {
+		console.log(error);
+	}
 }
 
 module.exports.send = send;

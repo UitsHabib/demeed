@@ -1,3 +1,4 @@
+const path = require("path");
 const { Sequelize } = require("sequelize");
 const nodeCache = require(path.join(process.cwd(), "src/config/lib/nodecache"));
 
