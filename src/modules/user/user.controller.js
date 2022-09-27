@@ -1,5 +1,6 @@
+const path = require("path");
 const User = require("./user.model");
-const EmailService = require("../core/email-service/email.service");
+const EmailService = require("../../config/lib/email-service/email.service");
 const { generateAccessToken } = require("./user.service");
 
 const login = async (req, res) => {
