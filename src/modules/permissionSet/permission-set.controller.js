@@ -36,7 +36,7 @@ const createPermissionSet = async (req, res) => {
             defaults: { name, description }
         });
 
-        if (!created) return res.status(409).send("Already created.");
+        if (!created) return res.status(409).send("Permission set is already created.");
 
         await Promise.all(permissions.map(async permission_id => {
             const permissionSet_id = permissionSet.id;
@@ -75,7 +75,7 @@ const updatePermissionSet = async (req, res) => {
 
         const permissionSet = await PermissionSet.findOne({ where: { id } });
 
-        if (!permissionSet) return res.status(404).send("Permission set not found!");
+        if (!permissionSet) return res.status(404).send("Permission was set not found!");
 
         if (name) await permissionSet.update({ name });
 
@@ -135,7 +135,7 @@ const deletePermissionSet = async (req, res) => {
             ]
         });
 
-        if (!permissionSetWithPermissions) return res.status(404).send("Permission set not found!");
+        if (!permissionSetWithPermissions) return res.status(404).send("Permission set was not found!");
 
         await PermissionSet.destroy({ where: { id } });
         await PermissionSetWithPermission.destroy({ where: { permissionSet_id: id } });
