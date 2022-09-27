@@ -5,7 +5,7 @@ const nodemailer = require("nodemailer");
 require("dotenv").config();
 const { GMAIL_ADDRESS, GMAIL_PASSWORD } = process.env;
 
-function sendMail(receivers) {
+function sendMail(receiver) {
 	const transporter = nodemailer.createTransport({
 		service: "gmail",
 		auth: {
@@ -26,7 +26,7 @@ function sendMail(receivers) {
 
 	const mailOptions = {
 		from: GMAIL_ADDRESS,
-		to: receivers,
+		to: receiver,
 		subject: "Registration Confirmation",
 		template: "email",
 		context: {
