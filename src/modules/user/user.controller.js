@@ -1,5 +1,5 @@
 const User = require("./user.model");
-const sendMail = require("../core/email-service/email.service");
+const EmailService = require("../core/email-service/email.service");
 const { generateAccessToken } = require("./user.service");
 
 const login = async (req, res) => {
@@ -49,7 +49,14 @@ const signUp = async (req, res) => {
 			return res.status(409).send("User already exists.");
 		}
 
-		sendMail(email);
+		const options = {
+			toAddresses: [email],
+			templateUrl: "src/config/lib/email-service/templates/email.handlebars",
+			subject: "Registration Confirmation",
+			data: {},
+		};
+
+		EmailService.send(options);
 		res.status(201).send(user);
 	} catch (error) {
 		console.log(error);
