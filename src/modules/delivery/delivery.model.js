@@ -1,26 +1,30 @@
 const path = require("path");
-const sequelize = require(path.join(process.cwd(),"/src/config/lib/sequelize.js"));
+const sequelize = require(path.join(
+  process.cwd(),
+  "/src/config/lib/sequelize.js"
+));
 const { DataTypes } = require("sequelize");
 
-
-const UserDeliveryMan = sequelize.define('user_delivery_man',{
-    id:{
-        allowNull:false,
-        primaryKey:true,
-        type:DataTypes.UUID,
-        defaultValue:DataTypes.UUIDV4
-
+const DeliveryMan = sequelize.define(
+  "delivery_mans",
+  {
+    id: {
+      allowNull: false,
+      primaryKey: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
     },
-    email:{
-
-        type:DataTypes.STRING
+    email: {
+      type: DataTypes.STRING,
     },
-    password:{
-        type:DataTypes.STRING
-    }
-},{
-    tableName:"user_delivery_man",
-    timestamps:false
-})
+    password: {
+      type: DataTypes.STRING,
+    },
+  },
+  {
+    tableName: "delivery_mans",
+    timestamps: false,
+  }
+);
 
-module.exports = UserDeliveryMan;
+module.exports = DeliveryMan;

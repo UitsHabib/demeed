@@ -1,8 +1,8 @@
-const { getUsers, createUser } = require("./user.controller");
+const { getUsers, registerUser } = require("./user.controller");
 
 module.exports = (app) => {
 
     app.get('/users', getUsers)
 
-    app.post('/users', createUser)
+    app.post('/users', registerUser)
 }

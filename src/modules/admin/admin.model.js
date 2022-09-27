@@ -1,8 +1,5 @@
 const path = require("path");
-const sequelize = require(path.join(
-  process.cwd(),
-  "/src/config/lib/sequelize.js"
-));
+const sequelize = require(path.join(process.cwd(), "/src/config/lib/sequelize.js"));
 const { DataTypes } = require("sequelize");
 
 const Admin = sequelize.define(
@@ -24,8 +21,8 @@ const Admin = sequelize.define(
   {
     tableName: "admins",
     timestamps: false,
-    createdAt: 'created_at',
-    updatedAt: 'updated_at',
+    createdAt: "created_at",
+    updatedAt: "updated_at",
   }
 );
 
