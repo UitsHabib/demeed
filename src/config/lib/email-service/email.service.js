@@ -3,31 +3,31 @@ const handlebars = require("nodemailer-express-handlebars");
 const nodemailer = require("nodemailer");
 
 require("dotenv").config();
-const { GMAIL_ADDRESS, GMAIL_PASSWORD } = process.env;
+const { USER_EMAIL, USER_PASSWORD } = process.env;
 
 const transporter = nodemailer.createTransport({
 	service: "gmail",
 	auth: {
-		user: GMAIL_ADDRESS,
-		pass: GMAIL_PASSWORD,
+		user: USER_EMAIL,
+		pass: USER_PASSWORD,
 	},
 });
 
-function sendMail(receiver) {
+function send(options) {
 	const handlebarOptions = {
 		viewEngine: {
-			partialsDir: path.join(process.cwd(), "src/views"),
+			partialsDir: path.join(process.cwd(), options.templateUrl),
 			defaultLayout: false,
 		},
-		viewPath: path.join(process.cwd(), "src/views"),
+		viewPath: path.join(process.cwd(), options.templateUrl),
 	};
 
 	transporter.use("compile", handlebars(handlebarOptions));
 
 	const mailOptions = {
-		from: GMAIL_ADDRESS,
-		to: receiver,
-		subject: "Registration Confirmation",
+		from: USER_EMAIL,
+		to: options.toAddresses,
+		subject: options.subject,
 		template: "email",
 		context: {
 			project: "DEMEED",
@@ -42,4 +42,4 @@ function sendMail(receiver) {
 	});
 }
 
-module.exports = sendMail;
+module.exports.send = send;
