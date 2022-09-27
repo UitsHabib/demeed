@@ -1,5 +1,5 @@
 const User = require("./user.model");
-const sendMail = require("../core/mail-server/mailServer");
+const sendMail = require("../core/email-service/email.service");
 const { generateAccessToken } = require("./user.service");
 
 const login = async (req, res) => {
