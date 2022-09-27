@@ -1,6 +1,6 @@
 const path = require("path");
-const sequelize = require(path.join(process.cwd(), "src/config/lib/sequelize.js"));
 const { DataTypes } = require("sequelize");
+const sequelize = require(path.join(process.cwd(), "src/config/lib/sequelize.js"));
 
 const PermissionSet = sequelize.define(
     "permission-sets",
