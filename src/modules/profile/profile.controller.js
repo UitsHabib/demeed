@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const Profile = require("./profile.model");
 
 const createProfile = async (req, res) => {
@@ -15,6 +16,15 @@ const createProfile = async (req, res) => {
 		console.log(error);
 		return res.status(500).send("Internal server error");
 	}
+=======
+const createProfile = (req, res) => {
+  try {
+    res.send("Profile Created !");
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internal Server Error");
+  }
+>>>>>>> Add Service Guard Feature
 };
 
 module.exports.createProfile = createProfile;
