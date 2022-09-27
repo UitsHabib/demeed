@@ -2,22 +2,26 @@ const path = require("path");
 const express = require("express");
 const config = require("../index");
 const cookieParser = require("cookie-parser");
+const nodeCache = require(path.join(process.cwd(), "src/config/lib/nodecache"));
 
 module.exports = () => {
-  const app = express();
+	const app = express();
 
-  app.use(express.json());
-  app.use(cookieParser("cookie-secret"));
+	app.use(cookieParser(nodeCache.getValue("COOKIE_SECRET")));
+	app.use(express.json());
+	app.use(express.urlencoded({ extended: true }));
 
-  const globalConfig = config.getGlobalConfig();
+	app.set("port", nodeCache.getValue("PORT"));
 
-  globalConfig.routes.forEach((routePath) => {
-    require(path.resolve(routePath))(app);
-  });
+	const globalConfig = config.getGlobalConfig();
 
-  globalConfig.strategies.forEach((strategyPath) => {
-    require(path.resolve(strategyPath))();
-  });
+	globalConfig.routes.forEach((routePath) => {
+		require(path.resolve(routePath))(app);
+	});
 
-  return app;
+	globalConfig.strategies.forEach((strategyPath) => {
+		require(path.resolve(strategyPath))();
+	});
+
+	return app;
 };
