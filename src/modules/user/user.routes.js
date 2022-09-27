@@ -1,6 +1,6 @@
 const validate = require("../core/middleware/validator.middleware");
 const { userSchema, userUpdateSchema } = require("./user.schema");
-const { getUsers, createUser, updateUser } = require("./user.controller");
+const { getUsers, createUser, updateUser, deleteUser } = require("./user.controller");
 
 module.exports = (app) => {
     app.route("/api/users")
@@ -9,4 +9,5 @@ module.exports = (app) => {
 
     app.route("/api/users/:id")
         .patch(validate(userUpdateSchema), updateUser)
+        .delete(deleteUser);
 };
