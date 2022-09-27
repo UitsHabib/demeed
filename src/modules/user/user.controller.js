@@ -78,7 +78,7 @@ const updateUser = async (req, res) => {
 
         const user = await User.findOne({ where: { id } });
 
-        if (!user) return res.status(409).send("User was not found!");
+        if (!user) return res.status(409).send("User not found!");
         
         if (password) await user.update({ password });
 
@@ -96,7 +96,7 @@ const deleteUser = async (req, res) => {
 
         const user = await User.findOne({ where: { id } });
 
-        if (!user) return res.status(409).send("User was not found!");
+        if (!user) return res.status(409).send("User not found!");
 
         await User.destroy({ where: { id } });
 

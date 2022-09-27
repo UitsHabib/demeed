@@ -56,7 +56,7 @@ async function initEnvironmentVariables() {
 }
 
 function getGlobalConfig() {
-	const assets = require(path.join(process.cwd(), "src/assets/default.js"));
+  const assets = require(path.join(process.cwd(), "src/config/assets/default.js"));
 
 	const config = {
 		routes: getGlobbedPaths(assets.routes),

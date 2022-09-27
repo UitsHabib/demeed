@@ -35,7 +35,7 @@ const createProfile = async (req, res) => {
 
         const [ profile, created ] = await Profile.findOrCreate({
             where: { title },
-            defaults: { title, description, created_by: id, updated_by: id }
+            defaults: { description, created_by: id, updated_by: id }
         });
 
         if(!created) {
@@ -75,16 +75,15 @@ const createProfile = async (req, res) => {
 const updateProfile = async (req, res) => {
     try {
         const { id } = req.params;
-		const userId = req.user.id;
         const { title, description, permissions } = req.body;
 
         const profile = await Profile.findOne({ where: { id } });
 
-        if (!profile) return res.status(404).send("Profile was not found!");
+        if (!profile) return res.status(404).send("Profile not found!");
 
-        if (title) await profile.update({ title });
+        if (title) await profile.update({ title, updated_by: req.user.id });
 
-        if (description) await profile.update({ description });
+        if (description) await profile.update({ description, updated_by: req.user.id });
 
 		if(permissions) {
 			await ProfilePermission.destroy({ where: { profile_id: id } });
@@ -95,8 +94,6 @@ const updateProfile = async (req, res) => {
 				await ProfilePermission.create({ profile_id, permission_id });
 			}));
 		}
-
-		if(title || description) await profile.update({ updated_by: userId });
 
 		const profileWithPermissions = await Profile.findOne({
 			where: { id: profile.id },
@@ -142,7 +139,7 @@ const deleteProfile = async (req, res) => {
 			]
 		});
 
-        if (!profile) return res.status(404).send("Profile was not found!");
+        if (!profile) return res.status(404).send("Profile not found!");
 
         await Profile.destroy({ where: { id } });
         await ProfilePermission.destroy({ where: { profile_id: id } });

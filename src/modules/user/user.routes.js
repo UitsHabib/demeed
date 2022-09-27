@@ -11,7 +11,6 @@ module.exports = (app) => {
     app.post("/api/users/signup", validate(registerSchema), signUp);
     app.post("/api/users/logout", UserStrategy, logout);
     app.get("/api/users", UserStrategy, ServiceGuard([Services.MANAGE_USER]), getUsers);
-
     app.route("/api/users/:id")
         .patch(UserStrategy, validate(userUpdateSchema), updateUser)
         .delete(UserStrategy, deleteUser);
