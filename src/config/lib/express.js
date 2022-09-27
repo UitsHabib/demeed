@@ -1,6 +1,7 @@
 const path = require("path");
 const express = require("express");
 const path = require("path");
+const cookieParser = require("cookie-parser");
 const config = require("../index");
 const cookieParser = require("cookie-parser");
 const nodeCache = require(path.join(process.cwd(), "src/config/lib/nodecache"));
