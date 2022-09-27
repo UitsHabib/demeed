@@ -13,21 +13,17 @@ module.exports = () => {
 
   passport.use(
     "admin-jwt",
-    new Strategy(
-      { secretOrKey: "jwt-secret", jwtFromRequest: cookieExtractor },
-      function (payload, done) {
-        Admin.findOne({
-          where: {
-            id: payload.id,
-          },
-        }).then((admin) => {
-          if (admin) {
-            return done(null, admin);
-          }
-
-          return done(null, false);
-        });
-      }
-    )
+    new Strategy({ secretOrKey: "jwt-secret", jwtFromRequest: cookieExtractor }, function (payload, done) {
+      Admin.findOne({
+        where: {
+          id: payload.id,
+        },
+      }).then((admin) => {
+        if (admin) {
+          return done(null, admin);
+        }
+        return done(null, false);
+      });
+    })
   );
 };

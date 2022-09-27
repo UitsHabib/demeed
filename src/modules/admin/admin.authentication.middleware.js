@@ -19,7 +19,6 @@ const AdminStrategy = (req, res, next) => {
         if (err) {
           return next(err);
         }
-
         next();
       }
     );

@@ -15,6 +15,9 @@ module.exports = () => {
   globalConfig.routes.forEach((routePath) => {
     require(path.resolve(routePath))(app);
   });
+  globalConfig.strategies.forEach((strategyPath) => {
+    require(path.resolve(strategyPath))();
+  });
 
   globalConfig.strategies.forEach((strategyPath) => {
     require(path.resolve(strategyPath))();

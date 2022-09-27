@@ -127,7 +127,6 @@ const getSignedInUserProfile = async (req, res) => {
   } catch (error) {
     res.status(500).send("Internal server error.");
   }
-  promise.then(success).catch(error);
 };
 
 const logout = (req, res) => {
