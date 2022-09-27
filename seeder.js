@@ -79,6 +79,7 @@ async function init() {
 				{ title: "Manage Users", slug: "manage-users", created_by: admin.id, updated_by: admin.id },
 				{ title: "Manage Profiles", slug: "manage-profiles", created_by: admin.id, updated_by: admin.id },
 				{ title: "Manage Permissions", slug: "manage-permissions", created_by: admin.id, updated_by: admin.id },
+				{ title: "Manage Services", slug: "manage-services", created_by: admin.id, updated_by: admin.id },
 			];
 
 			Service.destroy({ truncate: { cascade: true } }).then(function () {
@@ -117,15 +118,17 @@ async function init() {
 				Service.findOne({ where: { title: "Manage Users" } }),
 				Service.findOne({ where: { title: "Manage Profiles" } }),
 				Service.findOne({ where: { title: "Manage Permissions" } }),
+				Service.findOne({ where: { title: "Manage Services" } }),
 
 				Permission.findOne({ where: { title: "System Admin Permission" } }),
 			]).then(function (values) {
-				const [manageUserService, manageProfileService, managePermissionService, systemAdminPermission] = values;
+				const [manageUserService, manageProfileService, managePermissionService, manageService, systemAdminPermission] = values;
 
 				const permission_services = [
 					{ permission_id: systemAdminPermission.id, service_id: manageUserService.id },
 					{ permission_id: systemAdminPermission.id, service_id: manageProfileService.id },
 					{ permission_id: systemAdminPermission.id, service_id: managePermissionService.id },
+					{ permission_id: systemAdminPermission.id, service_id: manageService.id }
 				];
 
 				PermissionService.destroy({ truncate: { cascade: true } }).then(function () {
