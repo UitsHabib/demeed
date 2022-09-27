@@ -5,15 +5,15 @@ const nodemailer = require("nodemailer");
 require("dotenv").config();
 const { GMAIL_ADDRESS, GMAIL_PASSWORD } = process.env;
 
-function sendMail(receiver) {
-	const transporter = nodemailer.createTransport({
-		service: "gmail",
-		auth: {
-			user: GMAIL_ADDRESS,
-			pass: GMAIL_PASSWORD,
-		},
-	});
+const transporter = nodemailer.createTransport({
+	service: "gmail",
+	auth: {
+		user: GMAIL_ADDRESS,
+		pass: GMAIL_PASSWORD,
+	},
+});
 
+function sendMail(receiver) {
 	const handlebarOptions = {
 		viewEngine: {
 			partialsDir: path.join(process.cwd(), "src/views"),
