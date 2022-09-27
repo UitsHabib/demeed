@@ -2,7 +2,6 @@ const path = require("path");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const config = require("../index");
-const cookieParser = require("cookie-parser");
 
 module.exports = () => {
   const app = express();

@@ -19,8 +19,6 @@ async function init() {
   const PermissionService = require(path.join(process.cwd(), "src/modules/permission/permission-service.model.js"));
   const ProfilePermission = require(path.join(process.cwd(), "src/modules/permission/profile-permission.model.js"));
 
-  require(path.join(process.cwd(), "src/modules/admin/admin.model.js"));
-
   await sequelize.sync();
 
   function userSeeder(callback) {
