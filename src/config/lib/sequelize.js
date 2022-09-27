@@ -1,6 +1,9 @@
-require("dotenv").config();
 const { Sequelize } = require("sequelize");
-const { DB_HOST, DB_USER, DB_PASSWORD } = process.env;
+const nodeCache = require(path.join(process.cwd(), "src/config/lib/nodecache"));
+
+const DB_HOST = nodeCache.getValue("DB_HOST");
+const DB_USER = nodeCache.getValue("DB_USER");
+const DB_PASSWORD = nodeCache.getValue("DB_PASSWORD");
 
 const sequelize = new Sequelize("blog", DB_USER, DB_PASSWORD, {
 	host: DB_HOST,

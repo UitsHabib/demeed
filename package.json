@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "nodemon server.js",
     "seed": "node seeder.js"
   },
   "keywords": [],
@@ -19,6 +19,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "mysql2": "^2.3.3",
+    "node-cache": "^5.1.2",
     "nodemon": "^2.0.19",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
