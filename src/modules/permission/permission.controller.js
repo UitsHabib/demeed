@@ -107,7 +107,7 @@ const updatePermission = async (req, res) => {
 
         const permission = await Permission.findOne({ where: { id } });
 
-        if (!permission) return res.status(404).send("Permission was not found!");
+        if (!permission) return res.status(404).send("Permission not found!");
 
         if (title) await permission.update({ title });
 
@@ -169,7 +169,7 @@ const deletePermission = async (req, res) => {
             ]
         });
 
-        if (!permissionWithServices) return res.status(404).send("Permission was not found!");
+        if (!permissionWithServices) return res.status(404).send("Permission not found!");
 
         await Permission.destroy({ where: { id } });
         await PermissionService.destroy({ where: { permission_id: id } });
