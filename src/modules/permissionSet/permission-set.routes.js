@@ -1,4 +1,4 @@
-const validate = require("../core/middleware/validator.middleware");
+const validate = require("../core/middlewares/validate.middleware");
 const AdminStrategy = require("../admin/admin.authentication.middelware");
 const { permissionSetSchema, permissionSetUpdateSchema } = require("./permission-set.schema");
 const { getPermissionSet, createPermissionSet, updatePermissionSet, deletePermissionSet } = require("./permission-set.controller");

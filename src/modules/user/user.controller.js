@@ -59,6 +59,29 @@ const logout = (req, res) => {
 	res.send("Logged out.");
 };
 
+const login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        const admin = await Admin.findOne({ where: { email, password } });
+
+        if (!admin) {
+            return res.status(400).send("Invalid credentials.");
+        };
+
+        res.cookie("access_token", generateAccessToken(admin), {
+            httpOnly: true,
+            signed: true
+        });
+
+        res.status(200).send(admin);
+    } catch (error) {
+        console.log(error);
+
+        res.status(500).send("Internal server error.");
+    }
+}
+
 const getUsers = async (req, res) => {
     try {
         const users = await User.findAll();
@@ -73,11 +96,11 @@ const getUsers = async (req, res) => {
 
 const createUser = async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        const { email, password } = req.body;
 
         const [ user, created ] = await User.findOrCreate({
             where: { email },
-            defaults: { name, email, password }
+            defaults: { email, password }
         });
 
         if(!created) return res.status(409).send("User is already created.");
