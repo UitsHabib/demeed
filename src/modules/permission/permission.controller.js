@@ -1,6 +1,6 @@
+const Permission = require("./permission.model");
 const Service = require("../service/service.model");
 const PermissionService = require("./permission-service.model");
-const Permission = require("./permission.model");
 
 const getPermission = async (req, res) => {
     try {
@@ -37,7 +37,7 @@ const createPermission = async (req, res) => {
         });
 
         if(!created) {
-            return res.status(409).send("Alreay created this permission.");
+            return res.status(409).send("Permission is already created.");
         };
 
         await Promise.all(services.map(async service_id => {
@@ -46,7 +46,7 @@ const createPermission = async (req, res) => {
             await PermissionService.create({ permission_id, service_id });
         }));
 
-        const PermissionWithServices = await Permission.findOne({
+        const permissionWithServices = await Permission.findOne({
             where: { id: permission.id },
             include: [
                 {
@@ -62,7 +62,7 @@ const createPermission = async (req, res) => {
             ]
         });
 
-        res.status(201).send(PermissionWithServices);
+        res.status(201).send(permissionWithServices);
     } catch (err) {
         console.log(err);
 
@@ -72,28 +72,28 @@ const createPermission = async (req, res) => {
 
 const updatePermission = async (req, res) => {
     try {
-        const { name, description, services } = req.body;
         const { id } = req.params;
+        const { name, description, services } = req.body;
 
-        const permission = await Permission.findOne({ where: { id }});
+        const permission = await Permission.findOne({ where: { id } });
 
-        if(!permission) return res.status(404).send("Not foun!");
+        if (!permission) return res.status(404).send("Permission was not found!");
 
-        if(name) await permission.update({ name });
+        if (name) await permission.update({ name });
 
-        if(description) await permission.update({ description });
+        if (description) await permission.update({ description });
 
-        if(services) {
-            await PermissionService.destroy({ where: { permission_id: id }});
+        if (services) {
+            await PermissionService.destroy({ where: { permission_id: id } });
 
-            services.map(async service_id => {
+            await Promise.all(services.map(async service_id => {
                 const permission_id = permission.id;
     
                 await PermissionService.create({ permission_id, service_id });
-            });
+            }));
         };
 
-        const PermissionWithServices = await Permission.findOne({
+        const permissionWithServices = await Permission.findOne({
             where: { id: permission.id },
             include: [
                 {
@@ -109,7 +109,7 @@ const updatePermission = async (req, res) => {
             ]
         });
 
-        res.status(201).send(PermissionWithServices);
+        res.status(201).send(permissionWithServices);
     } catch (err) {
         console.log(err);
 
@@ -121,10 +121,28 @@ const deletePermission = async (req, res) => {
     try {
         const { id } = req.params;
 
+        const permissionWithServices = await Permission.findOne({
+            where: { id },
+            include: [
+                {
+                    model: PermissionService,
+                    as: "permission_service",
+                    include: [
+                        {
+                            model: Service,
+                            as: "service"
+                        }
+                    ]
+                }
+            ]
+        });
+
+        if (!permissionWithServices) return res.status(404).send("Permission was not found!");
+
         await Permission.destroy({ where: { id } });
         await PermissionService.destroy({ where: { permission_id: id } });
 
-        res.status(200).send("Delete permission.")
+        res.status(200).send(permissionWithServices)
     } catch (err) {
         console.log(err);
 
