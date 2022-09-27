@@ -7,7 +7,7 @@ const AdminStrategy = (req, res, next) => {
         }
 
         if(!admin) {
-            return res.status(401).send("Unauthenticated merchant.")
+            return res.status(401).send("Unauthenticated user.")
         }
 
         req.login(admin, { session: false }, (err) => {
