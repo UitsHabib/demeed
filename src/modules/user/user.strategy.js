@@ -1,6 +1,9 @@
+const path = require("path");
 const passport = require("passport");
 const { Strategy } = require("passport-jwt");
 const User = require("./user.model");
+const nodeCache = require(path.join(process.cwd(), "/src/config/lib/nodecache"));
+
 
 module.exports = () => {
   function cookieExtractor(req) {
@@ -13,21 +16,19 @@ module.exports = () => {
 
   passport.use(
     "user-jwt",
-    new Strategy(
-      { secretOrKey: "jwt-secret", jwtFromRequest: cookieExtractor },
-      function (payload, done) {
-        User.findOne({
-          where: {
-            id: payload.id,
-          },
-        }).then((user) => {
-          if (user) {
-            return done(null, user);
-          }
+    new Strategy({ secretOrKey: nodeCache.getValue("TOKEN_SECRET"), jwtFromRequest: cookieExtractor }, 
+    function (payload, done) {
+      User.findOne({
+        where: {
+          id: payload.id,
+        },
+      }).then((user) => {
+        if (user) {
+          return done(null, user);
+        }
 
-          return done(null, false);
-        });
-      }
-    )
+        return done(null, false);
+      });
+    })
   );
 };

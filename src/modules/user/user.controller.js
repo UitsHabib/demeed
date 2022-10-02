@@ -1,119 +1,106 @@
+const path = ("path");
 const User = require("./user.model");
-const registerSchema = require("./user.schema");
 const { generateAccessToken } = require("./user.service");
 
-const login = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    const userReq = {
-      email,
-      password,
-    };
-
-    const user = await User.findOne({
-      where: {
-        email: userReq.email,
-        password: userReq.password,
-      },
-    });
-
-    if (!user) {
-      return res.status(400).send("Invalid credentials.");
-    }
-
-    res.cookie("access_token", generateAccessToken(user), {
-      httpOnly: true,
-      signed: true,
-    });
-
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(500).send("Internal server error.");
-  }
-};
-
 const signUp = async (req, res) => {
-  try {
-    const { email, password } = req.body;
+    try {
+        const { email, password } = req.body;
 
-    const [user, created] = await User.findOrCreate({
-      where: { email },
-      defaults: {
-        email,
-        password,
-      },
-    });
+        const [user, created] = await User.findOrCreate({ 
+            where: { email },
+            defaults: { email, password }
+        });
 
-    if (!created) {
-      return res.status(409).send("User already exists.");
+        if (!created) {
+            return res.status(409).send("User is already exists.");
+        };
+
+        res.status(201).send(user);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Internal server error.");
+    };
+}
+
+const login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        const user = await User.findOne({ where: { email, password } });
+
+        if (!user) {
+            return res.status(400).send("Invaild credentials.");
+        };
+
+        res.cookies("access_token", generateAccessToken(user), {
+            httpOnly: true,
+            signed: true
+        });
+
+        res.status(201).send(user);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("Internal server error.");
     }
+}
 
-    res.status(201).send(user);
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Internal server error.");
-  }
-};
+const getUsers = async (req, res) => {
+    try {
+        const users = await User.findAll();
 
-const getSignedInUserProfile = async (req, res) => {
-  try {
-    const id = req.user.id;
+        res.status(201).send(users);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Internal server error.");
+    };
+}
 
-    const user = await User.findOne({
-      where: {
-        id,
-      },
-    });
+const updateUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { password } = req.body;
 
-    if (!user) {
-      return res.status(404).send("User not found.");
-    }
+        const user = await User.findOne({ where: { id } });
 
-    res.status(200).send(user);
-  } catch (error) {
-    res.status(500).send("Internal server error.");
-  }
-};
+        if (!user) return res.status(404).send("User not found.");
 
-const logout = (req, res) => {
-  res.clearCookie("access_token");
-  res.send("Logged out.");
-};
+        if (password) await user.upadate({ password });
 
-const setProfile = async (req, res) => {
-  try {
-    const { userId, profile } = req.body;
+        res.status(200).send(user);
+    } catch (error) {
+        console.log(error);
 
-    const [updatedUser] = await User.update(
-      {
-        profile,
-      },
-      {
-        where: {
-          id: userId,
-        },
-      }
-    );
-
-    if (!updatedUser) {
-      return res.status(404).send("User not found.");
-    }
-
-    res.status(201).send(updatedUser);
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Internal server error.");
-  }
-};
+        res.status(500).send("Internal server error.")
+    };
+}
 
 const deleteUser = async (req, res) => {
-  return res.send("deleted");
-};
+    try {
+        const { id } = req.params;
 
-module.exports.login = login;
+        const user = await User.findOne({ where: { id } });
+
+        if (!user) return res.status(404).send("User not found.");
+
+        await User.destory({ where: { id } });
+
+        res.status(200).send(user);
+    } catch (error) {
+        console.log(error);
+
+        res.status(500).send("Internal server error.")
+    };
+}
+
+const logout = async (req, res) => {
+    res.clearCookie("access_token");
+    res.send("Logged out");
+    
+}
+
 module.exports.signUp = signUp;
-module.exports.getSignedInUserProfile = getSignedInUserProfile;
-module.exports.logout = logout;
-module.exports.setProfile = setProfile;
+module.exports.login = login;
+module.exports.getUsers = getUsers;
+module.exports.updateUser = updateUser;
 module.exports.deleteUser = deleteUser;
+module.exports.logout = logout;

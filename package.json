@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "nodemon server.js",
     "seed": "node seeder.js"
   },
   "keywords": [],
@@ -13,11 +13,13 @@
   "dependencies": {
     "async": "^3.2.4",
     "cookie-parser": "^1.4.6",
+    "dotenv": "^16.0.2",
     "express": "^4.18.1",
     "glob": "^8.0.3",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "mysql2": "^2.3.3",
+    "node-cache": "^5.1.2",
     "nodemon": "^2.0.19",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",

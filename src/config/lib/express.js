@@ -1,20 +1,17 @@
 const path = require("path");
 const express = require("express");
 const config = require("../index");
-<<<<<<< HEAD
 const cookieParser = require("cookie-parser");
+const nodeCache = require(path.join(process.cwd(), "/src/config/lib/nodecache"));
 
 module.exports = () => {
-=======
-const cookieParser = require("cookie-parser")
-
-module.exports = () => {
-
->>>>>>> d913a46 (Add create Permission)
   const app = express();
 
+  app.use(cookieParser(nodeCache.getValue("COOKIE_SECRET")));
   app.use(express.json());
-  app.use(cookieParser("cookie-secret"));
+  app.use(express.urlencoded({ extended: true } ));
+
+  app.set("port", nodeCache.getValue("PORT"));
 
   const globalConfig = config.getGlobalConfig();
 
