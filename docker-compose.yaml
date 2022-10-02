@@ -1,0 +1,33 @@
+version: '3.3'
+
+services:
+  db:
+    container_name: demeed_db
+    image: mysql
+    restart: unless-stopped
+
+    environment: 
+      - MYSQL_DATABASE=blog
+      - MYSQL_ROOT_PASSWORD=123456
+    ports:
+      - 3030:3306
+    volumes:
+      - db:/var/lib/mysql
+  
+  app:
+    container_name: demeed_app
+    build: 
+      dockerfile: Dockerfile
+      context: .
+    depends_on:
+      - db
+    env_file: ./.env
+    environment:
+      - DB_HOST=db 
+      - DB_USER=root
+      - DB_PASSWORD=123456
+    ports:
+      - 4000:3000
+
+volumes:
+  db:
