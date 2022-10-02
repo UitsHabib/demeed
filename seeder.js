@@ -7,13 +7,15 @@ async function init() {
 
 	const sequelize = require(path.join(process.cwd(), "/src/config/lib/sequelize.js"));
 
-	sequelize.query("CREATE DATABASE IF NOT EXISTS blog", (err, res) => {
+	await sequelize.query("CREATE DATABASE IF NOT EXISTS blog;", (err, res) => {
 		if (err) {
 			console.log(err);
 		} else {
 			console.log(res);
 		}
 	});
+
+	
 
 	const Service = require(path.join(process.cwd(), "src/modules/service/service.model.js"));
 	const User = require(path.join(process.cwd(), "src/modules/user/user.model.js"));
