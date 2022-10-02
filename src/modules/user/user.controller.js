@@ -116,5 +116,5 @@ module.exports.updateUser = updateUser;
 module.exports.deleteUser = deleteUser;
 module.exports.login = login;
 module.exports.logout = logout;
-module.exports.getSignedInUserProfile = getSignedInUserProfile;
+// module.exports.getSignedInUserProfile = getSignedInUserProfile;
 
