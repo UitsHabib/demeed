@@ -113,6 +113,7 @@ async function init() {
 	function permissionServiceSeeder(callback) {
 		User.findOne({
 			where: { email: "demeed@gmail.com" },
+
 		}).then(function (admin) {
 			Promise.all([
 				Service.findOne({ where: { title: "Manage Users" } }),
