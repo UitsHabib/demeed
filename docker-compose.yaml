@@ -28,6 +28,8 @@ services:
       - DB_PASSWORD=123456
     ports:
       - 4000:3000
+    volumes:
+      - ./:/app
 
 volumes:
   db:

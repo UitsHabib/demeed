@@ -1,7 +1,7 @@
 const path = require("path");
-const Profile = require("./profile.model");
-const Permission = require(path.join(process.cwd(), "src/modules/permission/permission.model"));
-const ProfilePermission = require(path.join(process.cwd(), "src/modules/permission/profile-permission.model"));
+const Profile = require(path.join(process.cwd(), "src/modules/platform/profile/profile.model"));
+const Permission = require(path.join(process.cwd(), "src/modules/platform/permission/permission.model"));
+const ProfilePermission = require(path.join(process.cwd(), "src/modules/platform/permission/profile-permission.model"));
 
 const getProfiles = async (req, res) => {
 	try {

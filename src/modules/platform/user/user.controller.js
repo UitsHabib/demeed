@@ -1,7 +1,7 @@
 const path = require("path");
-const User = require("./user.model");
-const { generateAccessToken } = require("./user.service");
-const EmailService = require("../../config/lib/email-service/email.service");
+const User = require(path.join(process.cwd(), "src/modules/platform/user/user.model"));
+const { generateAccessToken } = require(path.join(process.cwd(), "src/modules/platform/user/user.service"));
+const EmailService = require(path.join(process.cwd(), 'src/config/lib/email-service/email.service'));
 
 const login = async (req, res) => {
     try {

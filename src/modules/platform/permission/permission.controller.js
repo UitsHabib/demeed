@@ -1,6 +1,7 @@
-const Permission = require("./permission.model");
-const Service = require("../service/service.model");
-const PermissionService = require("./permission-service.model");
+const path = require('path');
+const Permission = require(path.join(process.cwd(), "src/modules/platform/permission/permission.model"));
+const Service = require(path.join(process.cwd(), "src/modules/platform/service/service.model"));
+const PermissionService = require(path.join(process.cwd(), "src/modules/platform/permission/permission-service.model"));
 
 const getPermissions = async (req, res) => {
     try {
