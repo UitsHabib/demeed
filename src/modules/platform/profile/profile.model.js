@@ -1,10 +1,10 @@
 const path = require("path");
 const sequelize = require(path.join(process.cwd(), "/src/config/lib/sequelize.js"));
 const { DataTypes } = require("sequelize");
-const Profile = require(path.join(process.cwd(), "src/modules/profile/profile.model"));
+const ProfilePermission = require(path.join(process.cwd(), "src/modules/platform/permission/profile-permission.model"));
 
-const User = sequelize.define(
-	"users",
+const Profile = sequelize.define(
+	"profiles",
 	{
 		id: {
 			allowNull: false,
@@ -12,17 +12,17 @@ const User = sequelize.define(
 			type: DataTypes.UUID,
 			defaultValue: DataTypes.UUIDV4,
 		},
-		email: {
+		title: {
 			allowNull: false,
 			type: DataTypes.STRING,
 		},
-		password: {
-			allowNull: false,
+		description: {
+			allowNull: true,
 			type: DataTypes.STRING,
 		},
-		profile_id: {
-			//allowNull: false,
-			type: DataTypes.STRING,
+		type: {
+			type: DataTypes.ENUM("custom", "standard"),
+			defaultValue: "custom",
 		},
 		created_by: {
 			type: DataTypes.UUID,
@@ -32,13 +32,13 @@ const User = sequelize.define(
 		},
 	},
 	{
-		tableName: "users",
+		tableName: "profiles",
 		timestamps: false,
 		createdAt: "created_at",
 		updatedAt: "updated_at",
 	}
 );
 
-User.belongsTo(Profile, { as: "profile", foreignKey: "profile_id", constraints: false });
+Profile.hasMany(ProfilePermission, { as: "profile_permissions", foreignKey: "profile_id" });
 
-module.exports = User;
+module.exports = Profile;

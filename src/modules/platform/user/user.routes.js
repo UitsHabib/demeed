@@ -1,7 +1,7 @@
 const path = require("path");
-const UserStrategy = require("./user.authentication.middleware");
-const { registerSchema, loginSchema, userUpdateSchema } = require("./user.schema");
-const { login, logout, signUp, getUsers, updateUser, deleteUser } = require("./user.controller");
+const UserStrategy = require(path.join(process.cwd(), "src/modules/platform/user/user.authentication.middleware"));
+const { registerSchema, loginSchema, userUpdateSchema } = require(path.join(process.cwd(), "src/modules/platform/user/user.schema"));
+const { login, logout, signUp, getUsers, updateUser, deleteUser } = require(path.join(process.cwd(), "src/modules/platform/user/user.controller"));
 const validate = require(path.join(process.cwd(), "src/modules/core/middlewares/validate.middleware"));
 const { Services } = require(path.join(process.cwd(), "src/modules/core/authorization/authorization.constants"));
 const { ServiceGuard } = require(path.join(process.cwd(), "src/modules/core/authorization/authorization.middlewares"));

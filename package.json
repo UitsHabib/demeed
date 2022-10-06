@@ -13,6 +13,7 @@
   "dependencies": {
     "async": "^3.2.4",
     "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.2",
     "express": "^4.18.1",
     "glob": "^8.0.3",
