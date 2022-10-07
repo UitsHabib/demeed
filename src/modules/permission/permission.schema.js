@@ -1,11 +1,11 @@
 const { string, object, array } = require("yup");
 
 const permissionSchema = object().shape({
-  permission_name: string()
+  name: string()
     .max(50, "This field must be at most 50 characters long.")
     .required("This field must not be empty."),
 
-  service_id: string()
+  service_ids: array().of(string())
   .required("This field must not be empty."),
 });
 
