@@ -7,11 +7,9 @@ const { Services } = require(path.join(process.cwd(), "src/modules/core/authoriz
 const { ServiceGuard } = require(path.join(process.cwd(), "src/modules/core/authorization/authorization.middlewares"));
 
 module.exports = (app) => {
-    app.post("/api/users/login", validate(loginSchema), login);
-    app.post("/api/users/signup", validate(registerSchema), signUp);
-    app.post("/api/users/logout", UserStrategy, logout);
-    app.get("/api/users", UserStrategy, ServiceGuard([Services.MANAGE_USER]), getUsers);
-    app.route("/api/users/:id")
-        .patch(UserStrategy, validate(userUpdateSchema), updateUser)
-        .delete(UserStrategy, deleteUser);
+	app.post("/api/users/login", validate(loginSchema), login);
+	app.post("/api/users/logout", UserStrategy, logout);
+	app.post("/api/users", validate(registerSchema), signUp);
+	app.get("/api/users", UserStrategy, ServiceGuard([Services.MANAGE_USER]), getUsers);
+	app.route("/api/users/:id").patch(UserStrategy, validate(userUpdateSchema), updateUser).delete(UserStrategy, deleteUser);
 };
