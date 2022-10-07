@@ -1,0 +1,26 @@
+zoha -> 	common login for all (customer/admin/merchant) : /api/login
+		same for logout : api/logout
+		/api/users/profile -> get logged in user data
+		/api/users/profile -> update logged in user data
+		/api/users/change-password -> change password of anyone
+		/api/users/forgot-password -> 
+		/api/users/reset-password ->
+		pagination add
+
+shatabdi -> /api/customers -> get all customers
+		/api/customers/profile -> get logged in customer profile
+		/api/customers/login -> customer login
+		/api/customers/logout
+		/api/customers/profile -> update profile + image upload -> package: multer, website: cloudinary
+
+bari ->	/api/customers/cart -> get cart, update cart, delete cart
+		cart table -> id, customer_id(fk), product_id, quantity
+
+emon -> 	/api/orders -> post request
+		order table -> id, customer_id(fk), status (pending/confirmed, default pending), delivery_status(process pending, processing, success, failed), shippment_date
+
+iqbal -> 	/api/merchants/add-products -> logged in merchant will add product.
+		product table: id, merchant_id(fk), name, price, description, discount, stock_quantity, images(1-3)
+
+
+		
