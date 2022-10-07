@@ -165,7 +165,15 @@ async function init() {
 		});
 	}
 
-	async.waterfall([userSeeder, profileSeeder, userUpdateSeeder, serviceSeeder, permissionSeeder, permissionServiceSeeder, profilePermissionSeeder], function (err) {
+	async.waterfall([
+		userSeeder, 
+		profileSeeder, 
+		userUpdateSeeder, 
+		serviceSeeder, 
+		permissionSeeder, 
+		permissionServiceSeeder, 
+		profilePermissionSeeder
+	], function (err) {
 		if (err) console.error(err);
 		else console.info("DB seed completed");
 		process.exit();
