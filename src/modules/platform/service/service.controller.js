@@ -3,13 +3,23 @@ const Service = require(path.join(process.cwd(), "src/modules/platform/service/s
 
 const getService = async (req, res) => {
     try {
-        const services = await Service.findAll();
+        const { page, limit } = req.query;
+
+        const pageLimit = {
+            limit: parseInt(limit) ? parseInt(limit) : 2,
+            page: parseInt(page) ? parseInt(page) : 0
+        };
+
+        const services = await Service.findAll({
+            limit: pageLimit.limit,
+            offset: pageLimit.limit * pageLimit.page
+        });
 
         res.status(200).send(services);
     } catch (err) {
         console.log(err);
 
-        res.status(500).send("Internal server error.");
+        res.status(500).send("Internal server error.")
     };
 };
 
