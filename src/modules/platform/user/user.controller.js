@@ -39,7 +39,7 @@ const signUp = async (req, res) => {
 
 		const options = {
 			toAddresses: [email],
-			templateUrl: "src/config/lib/email-service/templates/email.handlebars",
+			//templateUrl: "src/config/lib/email-service/templates/email.handlebars",
 			subject: "Registration Confirmation",
 			data: {},
 		};
@@ -61,7 +61,17 @@ const logout = (req, res) => {
 
 const getUsers = async (req, res) => {
     try {
-        const users = await User.findAll();
+        const { page, limit } = req.query;
+        
+        const pageLimit = {
+            limit: parseInt(limit) ? parseInt(limit) : 2,
+            page: parseInt(page) ? parseInt(page) : 0
+        }
+
+        const users = await User.findAll({
+            limit: pageLimit.limit,
+            offset: pageLimit.limit * pageLimit.page
+        });
 
         res.status(200).send(users);
     } catch (err) {

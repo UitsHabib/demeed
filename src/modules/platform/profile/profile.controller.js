@@ -5,7 +5,14 @@ const ProfilePermission = require(path.join(process.cwd(), "src/modules/platform
 
 const getProfiles = async (req, res) => {
 	try {
-        const profiles = await Profile.findAll({
+        const { page, limit } = req.query;
+
+        const pageLimit = {
+            limit: parseInt(limit) ? parseInt(limit) : 2,
+            page: parseInt(page) ? parseInt(page) : 0
+        };
+
+        const profiles = await Profile.findAll({  
             include: [
                 {
                     model: ProfilePermission,
@@ -17,7 +24,9 @@ const getProfiles = async (req, res) => {
                         }
                     ]
                 }
-            ]
+            ],
+            limit: pageLimit.limit,
+            offset: pageLimit.limit * pageLimit.page
         });
 
         res.status(200).send(profiles);

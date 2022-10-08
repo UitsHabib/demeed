@@ -5,6 +5,13 @@ const PermissionService = require(path.join(process.cwd(), "src/modules/platform
 
 const getPermissions = async (req, res) => {
     try {
+        const { page, limit } = req.query;
+
+        const pageLimit = {
+            limit: parseInt(limit) ? parseInt(limit) : 2,
+            page: parseInt(page) ? parseInt(page) : 0
+        };
+
         const permissions = await Permission.findAll({
             include: [
                 {
@@ -17,7 +24,9 @@ const getPermissions = async (req, res) => {
                         }
                     ]
                 }
-            ]
+            ],
+            limit: pageLimit.limit,
+            offset: pageLimit.limit * pageLimit.page
         });
 
         res.status(200).send(permissions);
