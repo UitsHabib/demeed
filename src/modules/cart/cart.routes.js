@@ -4,5 +4,5 @@ const UserStrategy = require(path.join(process.cwd(), "src/modules/platform/user
 
 module.exports = (app) => {
   app.route("/api/customers/cart").post(UserStrategy, addCart).get(UserStrategy, getCarts);
-  app.route("/api/customers/cart/:id").delete(UserStrategy, deleteCart).put(UserStrategy, updateCart);
+  app.route("/api/customers/cart/:id").put(UserStrategy, updateCart).delete(UserStrategy, deleteCart);
 };
