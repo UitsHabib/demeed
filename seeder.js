@@ -11,18 +11,17 @@ async function init() {
 		if (err) {
 			console.log(err);
 		} else {
-			console.log(res); 
+			console.log(res);
 		}
 	});
 
-	
-
-	const Service = require(path.join(process.cwd(), "src/modules/service/service.model.js"));
-	const User = require(path.join(process.cwd(), "src/modules/user/user.model.js"));
-	const Profile = require(path.join(process.cwd(), "src/modules/profile/profile.model.js"));
-	const Permission = require(path.join(process.cwd(), "src/modules/permission/permission.model.js"));
-	const PermissionService = require(path.join(process.cwd(), "src/modules/permission/permission-service.model.js"));
-	const ProfilePermission = require(path.join(process.cwd(), "src/modules/permission/profile-permission.model.js"));
+	const Service = require(path.join(process.cwd(), "src/modules/platform/service/service.model.js"));
+	const User = require(path.join(process.cwd(), "src/modules/platform/user/user.model.js"));
+	const Profile = require(path.join(process.cwd(), "src/modules/platform/profile/profile.model.js"));
+	const Permission = require(path.join(process.cwd(), "src/modules/platform/permission/permission.model.js"));
+	const PermissionService = require(path.join(process.cwd(), "src/modules/platform/permission/permission-service.model.js"));
+	const ProfilePermission = require(path.join(process.cwd(), "src/modules/platform/permission/profile-permission.model.js"));
+	const Customer = require(path.join(process.cwd(), "/src/modules/customer/customer.model.js"));
 
 	await sequelize.sync();
 
@@ -80,6 +79,7 @@ async function init() {
 				{ title: "Manage Profiles", slug: "manage-profiles", created_by: admin.id, updated_by: admin.id },
 				{ title: "Manage Permissions", slug: "manage-permissions", created_by: admin.id, updated_by: admin.id },
 				{ title: "Manage Services", slug: "manage-services", created_by: admin.id, updated_by: admin.id },
+				{ title: "Get Customer List", slug: "get-customer-list", created_by: admin.id, updated_by: admin.id },
 			];
 
 			Service.destroy({ truncate: { cascade: true } }).then(function () {
@@ -120,16 +120,18 @@ async function init() {
 				Service.findOne({ where: { title: "Manage Profiles" } }),
 				Service.findOne({ where: { title: "Manage Permissions" } }),
 				Service.findOne({ where: { title: "Manage Services" } }),
+				Service.findOne({ where: { title: "Get Customer List" } }),
 
 				Permission.findOne({ where: { title: "System Admin Permission" } }),
 			]).then(function (values) {
-				const [manageUserService, manageProfileService, managePermissionService, manageService, systemAdminPermission] = values;
+				const [manageUserService, manageProfileService, managePermissionService, manageService, getCustomerList, systemAdminPermission] = values;
 
 				const permission_services = [
 					{ permission_id: systemAdminPermission.id, service_id: manageUserService.id },
 					{ permission_id: systemAdminPermission.id, service_id: manageProfileService.id },
 					{ permission_id: systemAdminPermission.id, service_id: managePermissionService.id },
-					{ permission_id: systemAdminPermission.id, service_id: manageService.id }
+					{ permission_id: systemAdminPermission.id, service_id: manageService.id },
+					{ permission_id: systemAdminPermission.id, service_id: getCustomerList.id },
 				];
 
 				PermissionService.destroy({ truncate: { cascade: true } }).then(function () {
@@ -165,7 +167,18 @@ async function init() {
 		});
 	}
 
-	async.waterfall([userSeeder, profileSeeder, userUpdateSeeder, serviceSeeder, permissionSeeder, permissionServiceSeeder, profilePermissionSeeder], function (err) {
+	function customerSeeder(callback) {
+		Customer.findOrCreate({
+			where: { email: "customer@gmail.com" },
+			defaults: {
+				password: "12345678",
+			},
+		}).then(function () {
+			callback();
+		});
+	}
+
+	async.waterfall([userSeeder, profileSeeder, userUpdateSeeder, serviceSeeder, permissionSeeder, permissionServiceSeeder, profilePermissionSeeder, customerSeeder], function (err) {
 		if (err) console.error(err);
 		else console.info("DB seed completed");
 		process.exit();
