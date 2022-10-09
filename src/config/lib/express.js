@@ -4,7 +4,6 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const config = require("../index");
 const nodeCache = require(path.join(process.cwd(), "src/config/lib/nodecache"));
-const { cloudinaryConfig } = require(path.join(process.cwd(), "src/config/lib/cloudinaryConfig"));
 
 module.exports = () => {
 	const app = express();
@@ -12,7 +11,6 @@ module.exports = () => {
 	app.use(cookieParser(nodeCache.getValue("COOKIE_SECRET")));
 	app.use(express.json());
 	app.use(express.urlencoded({ extended: true }));
-	app.use("*", cloudinaryConfig);
 
 	const corsOptions = {
 		credentials: true,
