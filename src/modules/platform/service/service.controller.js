@@ -7,12 +7,12 @@ const getService = async (req, res) => {
 
         const pageLimit = {
             limit: parseInt(limit) ? parseInt(limit) : 2,
-            page: parseInt(page) ? parseInt(page) : 0
+            page: parseInt(page) ? parseInt(page) : 1
         };
 
         const services = await Service.findAll({
             limit: pageLimit.limit,
-            offset: pageLimit.limit * pageLimit.page
+            offset: pageLimit.limit * (pageLimit.page -1)
         });
 
         res.status(200).send(services);
