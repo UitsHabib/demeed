@@ -7,8 +7,16 @@ const addCart = async (req, res) => {
     const { id } = req.user;
     const { product_id, quantity } = req.body;
     const cart = { customer_id: id, product_id: product_id, quantity: quantity };
-    await Cart.create(cart);
-    res.status(201).send("Added to cart !");
+
+    const checkCart = await Cart.findOne({ where: { customer_id: id, product_id: product_id } });
+    if (checkCart) {
+      const quantityUpdate = checkCart.quantity + quantity;
+      checkCart.update({ quantity: quantityUpdate });
+      res.status(201).send("Added to cart !");
+    } else {
+      await Cart.create(cart);
+      res.status(201).send("Added to cart !");
+    }
   } catch (err) {
     console.log(err);
     res.status(500).send("Internal Server Error");
