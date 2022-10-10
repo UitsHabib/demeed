@@ -57,11 +57,14 @@ const updateCustomerProfile = async (req, res) => {
 	try {
 		const id = req.user.id;
 		const customer = await Customer.findOne({ where: { id } });
+		const profileImagePublicId = customer.profile_image_public_id;
 
 		if (req.file?.path) {
+			if (profileImagePublicId) await cloudinary.uploader.destroy(profileImagePublicId);
+
 			const fileUrl = await cloudinary.uploader.upload(req.file?.path);
 
-			await Customer.update({ profile_image: fileUrl.secure_url }, { where: { id } });
+			await Customer.update({ profile_image_url: fileUrl.secure_url, profile_image_public_id: fileUrl.public_id }, { where: { id } });
 		}
 
 		return res.status(200).json(customer);
