@@ -1,9 +1,11 @@
+const { profile } = require("console");
 const { use } = require("passport");
 const path = require("path");
 const User = require(path.join(process.cwd(), "src/modules/platform/user/user.model"));
-//const Profile = require(path.join(process.cwd(), "src/modules/platform/profile/profile.model"));
+const Profile = require(path.join(process.cwd(), "src/modules/platform/profile/profile.model"));
 const { generateAccessToken } = require(path.join(process.cwd(), "src/modules/platform/user/user.service"));
 const EmailService = require(path.join(process.cwd(), 'src/config/lib/email-service/email.service'));
+const { Op } = require("sequelize");
 
 const login = async (req, res) => {
     try {
@@ -23,7 +25,6 @@ const login = async (req, res) => {
         res.status(200).send(user);
     } catch (error) {
         console.log(error);
-
         res.status(500).send("Internal server error.");
     }
 }
@@ -34,7 +35,7 @@ const signUp = async (req, res) => {
 
         const [ user, created ] = await User.findOrCreate({
             where: { email },
-            defaults: { email, password }
+            defaults: { email, password, created_by: req.user.id, updated_by: req.user.id },
         });
 
         if(!created) return res.status(409).send("User is already created.");
@@ -51,34 +52,69 @@ const signUp = async (req, res) => {
         return res.status(201).send(user);
     } catch (err) {
         console.log(err);
-
         res.status(500).send("Internal server error.")
     };
 };
 
 const logout = (req, res) => {
 	res.clearCookie("access_token");
-	res.send("Logged out.");
+	res.status(200).send("Logged out.");
 };
 
 const getUsers = async (req, res) => {
     try {
-        const { page, limit } = req.query;
-        
-        const pageLimit = {
-            limit: parseInt(limit) ? parseInt(limit) : 2,
-            page: parseInt(page) ? parseInt(page) : 1
-        }
+        const page = req.query.page ? req.query.page - 1 : 0;
+        if(page < 0) return res.status(404).send("Page must be greater or equal one");
 
-        const users = await User.findAll({
-            limit: pageLimit.limit,
-            offset: pageLimit.limit * (pageLimit.page - 1)
+        const limit = req.query.limit ? +req.query.limit : 15;
+        const offset = page * limit;
+        
+        const order = [
+            ["created_at", "DESC"],
+            ["id", "DESC"]
+        ]
+
+        const { count: countByUser, rows: users } = await User.findAndCountAll({
+            where: { 
+                id: {
+                    [Op.ne]: req.user.id
+                }
+            },
+            include: [
+                {
+                    model: Profile,
+                    as: "profile"
+                },
+                {
+                    model: User,
+                    as: "createdByUser"
+                },
+                {
+                    model: User,
+                    as: "updatedByUser"
+                }
+            ],
+            offset,
+            limit,
+            order
         });
 
-        res.status(200).send(users);
+        const totalUser = countByUser;
+
+        const data = {
+            users,
+            metaData: {
+                page: page + 1,
+                limit: limit,
+                total: totalUser,
+                start: limit * page + 1,
+                end: offset + limit > totalUser ? totalUser : offset + limit
+            }
+        };
+
+        res.status(200).send(data);
     } catch (err) {
         console.log(err);
-
         res.status(500).send("Internal server error.")
     };
 };
@@ -97,7 +133,6 @@ const updateUser = async (req, res) => {
         return res.status(201).send(user);
     } catch (err) {
         console.log(err);
-
         res.status(500).send("Internal server error.")
     };
 };
@@ -114,7 +149,6 @@ const getUserProfile = async (req, res) => {
         res.status(200).send(user);
     } catch (err) {
         console.log(err);
-
         res.status(500).send("Internal server error.")
     };
 };
@@ -134,7 +168,6 @@ const updateUserProfile = async (req, res) => {
         res.status(200).send(user);
     } catch (err) {
         console.log(err);
-
         res.status(500).send("Internal server error.")
     };
 }
@@ -152,7 +185,6 @@ const deleteUser = async (req, res) => {
         return res.status(201).send(user);
     } catch (err) {
         console.log(err);
-
         res.status(500).send("Internal server error.")
     };
 };
@@ -170,7 +202,6 @@ const changePassword = async (req, res) => {
         return res.status(201).send(user);
     } catch (err) {
         console.log(err);
-
         res.status(500).send("Internal server error.")
     }
 };
@@ -195,7 +226,6 @@ const forgotPassword = async (req, res) => {
         return res.status(200).send(user);
     } catch (err) {
         console.log(err);
-
         res.status(500).send("Internal server error.")
     }
 };
@@ -213,7 +243,6 @@ const resetPassword = async (req, res) => {
         return res.status(201).send(user);
     } catch (err) {
         console.log(err);
-
         res.status(500).send("Internal server error.")
     }
 };

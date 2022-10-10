@@ -33,12 +33,14 @@ const User = sequelize.define(
 	},
 	{
 		tableName: "users",
-		timestamps: false,
+		timestamps: true,
 		createdAt: "created_at",
 		updatedAt: "updated_at",
 	}
 );
 
+User.belongsTo(User, { as: "createdByUser", foreignKey: "created_by" });
+User.belongsTo(User, { as: "updatedByUser", foreignKey: "updated_by" });
 User.belongsTo(Profile, { as: "profile", foreignKey: "profile_id", constraints: false });
 
 module.exports = User;

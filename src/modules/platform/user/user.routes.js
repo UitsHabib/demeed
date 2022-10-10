@@ -12,7 +12,7 @@ module.exports = (app) => {
     app.post("/api/logout", UserStrategy, logout);
     app.route("/api/users")
         .get(UserStrategy, ServiceGuard([Services.MANAGE_USER]), getUsers)
-        .post(validate(registerSchema), signUp);
+        .post(UserStrategy, validate(registerSchema), signUp);
     app.route("/api/users/profile")
         .get(UserStrategy, getUserProfile)
         .patch(UserStrategy, validate(updateUserProfileSchema), updateUserProfile)
