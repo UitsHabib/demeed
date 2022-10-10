@@ -1,6 +1,6 @@
-const { string, ref, object } = require("yup");
+const { string, object } = require("yup");
 
-const registerSchema = object().shape({
+const productSchema = object().shape({
     name: string()
         .max(50, "This field must be at most 50 characters long.")
         .required("This field must not be empty."),
@@ -17,7 +17,6 @@ const registerSchema = object().shape({
     stock_quantity: string()
         .required("This field must not be empty."),
     image: string()
-        .required("This field must not be empty."),
 });
 
-module.exports.registerSchema = registerSchema;
+module.exports.productSchema = productSchema;
