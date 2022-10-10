@@ -19,7 +19,11 @@ const Customer = sequelize.define(
 			allowNull: false,
 			type: DataTypes.STRING,
 		},
-		profile_image: {
+		profile_image_url: {
+			//allowNull: false,
+			type: DataTypes.STRING,
+		},
+		profile_image_public_id: {
 			//allowNull: false,
 			type: DataTypes.STRING,
 		},
