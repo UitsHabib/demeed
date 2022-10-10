@@ -1,5 +1,6 @@
+const path = require("path");
 const cloudinary = require("cloudinary");
-const nodeCache = require("./nodecache");
+const nodeCache = require(path.join(process.cwd(), "src/config/lib/nodecache"));
 
 cloudinary.config({
 	cloud_name: nodeCache.getValue("CLOUDINARY_CLOUD_NAME"),
