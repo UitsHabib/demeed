@@ -1,7 +1,7 @@
 const path = require("path");
 const express = require("express");
 const cookieParser = require("cookie-parser");
-const cors = require('cors');
+const cors = require("cors");
 const config = require("../index");
 const nodeCache = require(path.join(process.cwd(), "src/config/lib/nodecache"));
 
