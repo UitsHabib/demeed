@@ -16,23 +16,16 @@ const Cart = sequelize.define(
       allowNull: false,
       type: DataTypes.UUID,
     },
-    product_id: {
-      allowNull: false,
-      type: DataTypes.UUID,
-    },
-
-    quantity: {
-      type: DataTypes.INTEGER,
-    },
   },
   {
     tableName: "carts",
-    timestamps: false,
+    timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
   }
 );
 
-User.hasOne(Cart, { as: "carts", foreignKey: "customer_id" });
+User.hasOne(Cart, { as: "cart", foreignKey: "customer_id" });
+Cart.belongsTo(User, { as: "cart", foreignKey: "customer_id" });
 
 module.exports = Cart;
