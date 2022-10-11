@@ -7,22 +7,16 @@ const UserStrategy = (req, res, next) => {
     }
 
     if (!user) {
-      return res.status(401).send("Unautheticated user.");
+      return res.status(404).send("Unauthenticate User.");
     }
 
-    req.login(
-      user,
-      {
-        session: false,
-      },
-      (err) => {
-        if (err) {
-          return next(err);
-        }
-
-        next();
+    req.login(user, { session: false }, (err) => {
+      if (err) {
+        return next(err);
       }
-    );
+
+      next(err);
+    });
   });
 
   auth(req, res, next);

@@ -1,0 +1,12 @@
+joha, arop, tanvir, 
+    1. remove try catch
+    2. login
+Rudra, 
+    1. speparate validation
+pavel, joha, sakib, tanvir, 
+    1. hash password
+    2. handle env.
+shatabdi 
+    1. handle catches to unique file
+sakib(done)
+    1. common reuseable functions
