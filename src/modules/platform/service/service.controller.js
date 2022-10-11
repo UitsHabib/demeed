@@ -1,4 +1,5 @@
-const Service = require("./service.model");
+const path = require('path');
+const Service = require(path.join(process.cwd(), "src/modules/platform/service/service.model"));
 
 const getService = async (req, res) => {
     try {
@@ -8,7 +9,7 @@ const getService = async (req, res) => {
     } catch (err) {
         console.log(err);
 
-        res.status(500).send("Internal server error.")
+        res.status(500).send("Internal server error.");
     };
 };
 
