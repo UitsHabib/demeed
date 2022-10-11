@@ -17,12 +17,14 @@ async function init() {
 
 	
 
-	const Service = require(path.join(process.cwd(), "src/modules/service/service.model.js"));
-	const User = require(path.join(process.cwd(), "src/modules/user/user.model.js"));
-	const Profile = require(path.join(process.cwd(), "src/modules/profile/profile.model.js"));
-	const Permission = require(path.join(process.cwd(), "src/modules/permission/permission.model.js"));
-	const PermissionService = require(path.join(process.cwd(), "src/modules/permission/permission-service.model.js"));
-	const ProfilePermission = require(path.join(process.cwd(), "src/modules/permission/profile-permission.model.js"));
+	const Service = require(path.join(process.cwd(), "src/modules/platform/service/service.model.js"));
+	const User = require(path.join(process.cwd(), "src/modules/platform/user/user.model.js"));
+	const Profile = require(path.join(process.cwd(), "src/modules/platform/profile/profile.model.js"));
+	const Permission = require(path.join(process.cwd(), "src/modules/platform/permission/permission.model.js"));
+	const PermissionService = require(path.join(process.cwd(), "src/modules/platform/permission/permission-service.model.js"));
+	const ProfilePermission = require(path.join(process.cwd(), "src/modules/platform/permission/profile-permission.model.js"));
+	require(path.join(process.cwd(), "src/modules/order/order.model"));
+	require(path.join(process.cwd(), "src/modules/order/customer.model"));
 
 	await sequelize.sync();
 
