@@ -157,7 +157,15 @@ const getLoggedInCustomerProfile = async (req, res) => {
 const updateCustomerProfile = async (req, res) => {
 	try {
 		const id = req.user.id;
-		const customer = await User.findOne({ where: { id } });
+		const customer = await User.findOne({
+			where: { id },
+			include: [
+				{
+					model: Image,
+					as: "profile_image",
+				},
+			],
+		});
 		const profileImageId = customer.profile_image_id;
 		const profileImage = profileImageId
 			? await Image.findOne({
