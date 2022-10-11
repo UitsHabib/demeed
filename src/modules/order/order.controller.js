@@ -8,12 +8,10 @@ const createOrder = async (req, res) => {
         const order = await Order.create({ customer_id });
 
         if(!order) {
-            return res.status(409).send("Invaild Credentials");
+            return res.status(400).send("Invaild Credentials");
         };
 
-        res.status(201).send(order);
-       
-        
+        res.status(201).send(order);     
     } catch (err) {
         console.log(err);
         res.status(500).send("Internal server error.");

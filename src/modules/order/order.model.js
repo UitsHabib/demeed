@@ -4,44 +4,40 @@ const sequelize = require(path.join(process.cwd(), "src/config/lib/sequelize"));
 const Customer = require(path.join(process.cwd(), "src/modules/order/customer.model"));
 
 const Order = sequelize.define(
-    "orders", 
+    "orders",
     {
         id: {
-			allowNull: false,
-			primaryKey: true, 
-			type: DataTypes.UUID,
-			defaultValue: DataTypes.UUIDV4,
-		},
+            allowNull: false,
+            primaryKey: true,
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
+        },
         customer_id: {
             allowNull: false,
-            type: DataTypes.UUID
+            type: DataTypes.UUID,
         },
         status: {
-            type: DataTypes.ENUM("panding", "confirm"),
-            defaultValue: "panding",
+            type: DataTypes.ENUM,
+            values: ["confirmed", "pending"],
+            defaultValue: "pending",
         },
         delivery_status: {
-            type: DataTypes.ENUM("process pending", "processing", "success", "failed")
+            type: DataTypes.ENUM,
+            values: ["failed", "processing", "process-pending", "success"],
+            defaultValue: "process-pending"
         },
         shipment_date: {
             type: DataTypes.DATE,
         },
-        created_by: {
-			type: DataTypes.UUID,
-		},
-		updated_by: {
-			type: DataTypes.UUID,
-		},
     },
     {
-		tableName: "orders",
-		timestamps: false,
-		createdAt: "created_at",
-		updatedAt: "updated_at",
-	}
-    );
+        tableName: "orders",
+        timestamps: true,
+        createdAt: "created_at",
+        updatedAt: "updated_at",
+    }
+);
 
-    Customer.hasMany(Order, { as: 'orders', foreignKey: 'customer_id' });
-
+Customer.hasMany(Order, { as: "orders", foreignKey: "customer_id" });
 
 module.exports = Order;
