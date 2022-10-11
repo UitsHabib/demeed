@@ -148,7 +148,9 @@ async function init() {
 		User.findOne({
 			where: { email: "demeed@gmail.com" },
 		}).then(function (admin) {
-			Promise.all([Profile.findOne({ where: { title: "System Admin" } }), Permission.findOne({ where: { title: "System Admin Permission" } })]).then(function (values) {
+			Promise.all([
+				Profile.findOne({ where: { title: "System Admin" } }), 
+				Permission.findOne({ where: { title: "System Admin Permission" } })]).then(function (values) {
 				const [systemAdminProfile, systemAdminPermission] = values;
 
 				const profile_permissions = [{ permission_id: systemAdminPermission.id, profile_id: systemAdminProfile.id }];

@@ -55,6 +55,23 @@ async function initEnvironmentVariables() {
 	}
 }
 
+async function initEnvironmentVariables () {
+  require("dotenv").config();
+  
+  const nodeCache = require(path.join(process.cwd(), "/src/config/lib/nodecache"));
+
+  const secrets = {
+    secret1: "secret1",
+    secret2: "secret2",
+  };
+
+  for(const key in secrets) {
+    if(secrets.hasOwnProperty(key)) {
+      nodeCache.setValue(key, secrets[key]);
+    };
+  };
+}
+
 function getGlobalConfig() {
   const assets = require(path.join(process.cwd(), "src/config/assets/default.js"));
 
