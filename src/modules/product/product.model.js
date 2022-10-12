@@ -1,6 +1,7 @@
 const path = require("path");
 const sequelize = require(path.join(process.cwd(), "/src/config/lib/sequelize.js"));
 const { DataTypes } = require("sequelize");
+const File = require(path.join(process.cwd(), "src/modules/core/storage/file.model"));
 
 const Product = sequelize.define(
 	"products",
@@ -31,9 +32,6 @@ const Product = sequelize.define(
             allowNull: false,
 			type: DataTypes.STRING,
         },
-        image: {
-			type: DataTypes.STRING,
-        },
 		created_by: {
 			type: DataTypes.UUID,
 		},
@@ -48,5 +46,7 @@ const Product = sequelize.define(
 		updatedAt: "updated_at",
 	}
 );
+
+Product.hasMany(File, { as: "files", foreignKey: "owner_id" });
 
 module.exports = Product;
