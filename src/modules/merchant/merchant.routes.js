@@ -1,12 +1,10 @@
 const path = require("path");
 
 const MerchantStrategy = require(path.join(process.cwd(), "src/modules/merchant/merchant.authentication.middleware"));
+const validate = require(path.join(process.cwd(), "src/modules/core/middlewares/validate.middleware"));
 
 const { registerSchema, loginSchema, userUpdateSchema } = require(path.join(process.cwd(), "src/modules/merchant/merchant.schema.js"));
-
 const { login, logout, signUp, getUsers, updateUser, deleteUser } = require(path.join(process.cwd(), "src/modules/merchant/merchant.controller"));
-
-const validate = require(path.join(process.cwd(), "src/modules/core/middlewares/validate.middleware"));
 
 module.exports = (app) => {
     app.post("/api/merchants/registration", validate(registerSchema), signUp);

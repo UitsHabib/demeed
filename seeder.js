@@ -24,7 +24,6 @@ async function init() {
 
     const Merchant = require(path.join(process.cwd(), "src/modules/merchant/merchant.model.js"));
     const Product = require(path.join(process.cwd(),'src/modules/product/product.model'));
-    const Image = require(path.join(process.cwd(), "src/modules/product/productWithImage.model.js"));
 
 	await sequelize.sync();
 
