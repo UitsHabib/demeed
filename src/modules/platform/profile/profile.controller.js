@@ -5,14 +5,18 @@ const ProfilePermission = require(path.join(process.cwd(), "src/modules/platform
 
 const getProfiles = async (req, res) => {
 	try {
-        const { page, limit } = req.query;
+        const page = req.query.page ? req.query.page - 1 : 0;
+        if(page < 0) return res.status(404).send("Page must be greater or equal one");
 
-        const pageLimit = {
-            limit: parseInt(limit) ? parseInt(limit) : 2,
-            page: parseInt(page) ? parseInt(page) : 1
-        };
+        const limit = req.query.limit ? +req.query.limit : 15;
+        const offset = page * limit;
+        
+        const order = [
+            ["created_at", "DESC"],
+            ["id", "DESC"]
+        ]
 
-        const profiles = await Profile.findAll({  
+        const { count: totalProfile, rows: profile } = await Profile.findAndCountAll({  
             include: [
                 {
                     model: ProfilePermission,
@@ -25,26 +29,36 @@ const getProfiles = async (req, res) => {
                     ]
                 }
             ],
-            limit: pageLimit.limit,
-            offset: pageLimit.limit * (pageLimit.page - 1)
+            offset,
+            limit,
+            order
         });
 
-        res.status(200).send(profiles);
+        const data = {
+            profile,
+            metaData: {
+                page: page + 1,
+                limit: limit,
+                total: totalProfile,
+                start: limit * page + 1,
+                end: offset + limit > totalProfile ? totalProfile : offset + limit
+            }
+        };
+
+        res.status(200).send(data);
     } catch (err) {
         console.log(err);
-
         res.status(500).send("Internal server error.");
     };
-}
+};
 
 const createProfile = async (req, res) => {
     try {
-		const id = req.user.id;
         const { title, description, permissions } = req.body;
 
         const [ profile, created ] = await Profile.findOrCreate({
             where: { title },
-            defaults: { description, created_by: id, updated_by: id }
+            defaults: { description, created_by: req.user.id, updated_by: req.user.id },
         });
 
         if(!created) {
@@ -76,10 +90,9 @@ const createProfile = async (req, res) => {
         res.status(201).send(profileWithPermissions);
     } catch (err) {
         console.log(err);
-
         res.status(500).send("Internal server error.")
     }
-}
+};
 
 const updateProfile = async (req, res) => {
     try {
@@ -95,6 +108,7 @@ const updateProfile = async (req, res) => {
         if (description) await profile.update({ description, updated_by: req.user.id });
 
 		if(permissions) {
+            await profile.update({ updated_by: req.user.id });
 			await ProfilePermission.destroy({ where: { profile_id: id } });
 
 			await Promise.all(permissions.map(async permission_id => {
@@ -123,10 +137,9 @@ const updateProfile = async (req, res) => {
         res.status(201).send(profileWithPermissions);
     } catch (err) {
         console.log(err);
-
         res.status(500).send("Internal server error.")
     };
-}
+};
 
 const deleteProfile = async (req, res) => {
     try {
@@ -156,10 +169,9 @@ const deleteProfile = async (req, res) => {
         res.status(200).send(profile)
     } catch (err) {
         console.log(err);
-
         res.status(500).send("Internal server error.")
     };
-}
+};
 
 module.exports.getProfiles = getProfiles;
 module.exports.createProfile = createProfile;
