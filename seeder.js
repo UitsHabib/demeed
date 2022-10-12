@@ -11,18 +11,20 @@ async function init() {
 		if (err) {
 			console.log(err);
 		} else {
-			console.log(res);
+			console.log(res); 
 		}
 	});
 
 	
 
-	const Service = require(path.join(process.cwd(), "src/modules/service/service.model.js"));
-	const User = require(path.join(process.cwd(), "src/modules/user/user.model.js"));
-	const Profile = require(path.join(process.cwd(), "src/modules/profile/profile.model.js"));
-	const Permission = require(path.join(process.cwd(), "src/modules/permission/permission.model.js"));
-	const PermissionService = require(path.join(process.cwd(), "src/modules/permission/permission-service.model.js"));
-	const ProfilePermission = require(path.join(process.cwd(), "src/modules/permission/profile-permission.model.js"));
+	const Service = require(path.join(process.cwd(), "src/modules/platform/service/service.model.js"));
+	const User = require(path.join(process.cwd(), "src/modules/platform/user/user.model.js"));
+	const Profile = require(path.join(process.cwd(), "src/modules/platform/profile/profile.model.js"));
+	const Permission = require(path.join(process.cwd(), "src/modules/platform/permission/permission.model.js"));
+	const PermissionService = require(path.join(process.cwd(), "src/modules/platform/permission/permission-service.model.js"));
+	const ProfilePermission = require(path.join(process.cwd(), "src/modules/platform/permission/profile-permission.model.js"));
+	require(path.join(process.cwd(), "src/modules/order/order.model"));
+	require(path.join(process.cwd(), "src/modules/order/customer.model"));
 
 	await sequelize.sync();
 
@@ -148,7 +150,9 @@ async function init() {
 		User.findOne({
 			where: { email: "demeed@gmail.com" },
 		}).then(function (admin) {
-			Promise.all([Profile.findOne({ where: { title: "System Admin" } }), Permission.findOne({ where: { title: "System Admin Permission" } })]).then(function (values) {
+			Promise.all([
+				Profile.findOne({ where: { title: "System Admin" } }), 
+				Permission.findOne({ where: { title: "System Admin Permission" } })]).then(function (values) {
 				const [systemAdminProfile, systemAdminPermission] = values;
 
 				const profile_permissions = [{ permission_id: systemAdminPermission.id, profile_id: systemAdminProfile.id }];
@@ -165,7 +169,15 @@ async function init() {
 		});
 	}
 
-	async.waterfall([userSeeder, profileSeeder, userUpdateSeeder, serviceSeeder, permissionSeeder, permissionServiceSeeder, profilePermissionSeeder], function (err) {
+	async.waterfall([
+		userSeeder, 
+		profileSeeder, 
+		userUpdateSeeder, 
+		serviceSeeder, 
+		permissionSeeder, 
+		permissionServiceSeeder, 
+		profilePermissionSeeder
+	], function (err) {
 		if (err) console.error(err);
 		else console.info("DB seed completed");
 		process.exit();

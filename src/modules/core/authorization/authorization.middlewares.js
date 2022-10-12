@@ -1,10 +1,10 @@
 const path = require("path");
-const User = require(path.join(process.cwd(), "src/modules/user/user.model"));
-const Profile = require(path.join(process.cwd(), "src/modules/profile/profile.model"));
-const ProfilePermission = require(path.join(process.cwd(), "src/modules/permission/profile-permission.model"));
-const Permission = require(path.join(process.cwd(), "src/modules/permission/permission.model"));
-const PermissionService = require(path.join(process.cwd(), "src/modules/permission/permission-service.model"));
-const Service = require(path.join(process.cwd(), "src/modules/service/service.model"));
+const User = require(path.join(process.cwd(), "src/modules/platform/user/user.model"));
+const Profile = require(path.join(process.cwd(), "src/modules/platform/profile/profile.model"));
+const ProfilePermission = require(path.join(process.cwd(), "src/modules/platform/permission/profile-permission.model"));
+const Permission = require(path.join(process.cwd(), "src/modules/platform/permission/permission.model"));
+const PermissionService = require(path.join(process.cwd(), "src/modules/platform/permission/permission-service.model"));
+const Service = require(path.join(process.cwd(), "src/modules/platform/service/service.model"));
 
 async function getUserWithServices(userId) {
 	const user = await User.findOne({
@@ -48,7 +48,6 @@ async function getUserWithServices(userId) {
 			profile: {
 				profile_permissions: [
 					{
-
 					},
 					{
 						permission: {
@@ -66,6 +65,7 @@ async function getUserWithServices(userId) {
 	*/
 
 	const services = [];
+
 	if (user?.profile) {
 		for (const profilePermission of user.profile.profile_permissions) {
 			const permission = profilePermission.permission;

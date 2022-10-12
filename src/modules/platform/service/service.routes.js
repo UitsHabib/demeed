@@ -1,6 +1,6 @@
 const path = require("path");
-const { getService } = require("./service.controller");
-const UserStrategy = require(path.join(process.cwd(), "src/modules/user/user.authentication.middleware"));
+const { getService } = require(path.join(process.cwd(), "src/modules/platform/service/service.controller"));
+const UserStrategy = require(path.join(process.cwd(), "src/modules/platform/user/user.authentication.middleware"));
 const { Services } = require(path.join(process.cwd(), "src/modules/core/authorization/authorization.constants"));
 const { ServiceGuard } = require(path.join(process.cwd(), "src/modules/core/authorization/authorization.middlewares"));
 

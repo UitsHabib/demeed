@@ -1,6 +1,6 @@
 const path = require("path");
 const sequelize = require(path.join(process.cwd(), "/src/config/lib/sequelize.js"));
-const Permission = require(path.join(process.cwd(), "src/modules/permission/permission.model"));
+const Permission = require(path.join(process.cwd(), "src/modules/platform/permission/permission.model"));
 const { DataTypes } = require("sequelize");
 
 const ProfilePermission = sequelize.define(
@@ -32,3 +32,4 @@ const ProfilePermission = sequelize.define(
 ProfilePermission.belongsTo(Permission, { as: "permission", foreignKey: "permission_id" });
 
 module.exports = ProfilePermission;
+
