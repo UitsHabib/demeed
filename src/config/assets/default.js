@@ -7,6 +7,7 @@ module.exports = {
 		"src/modules/platform/service/service.routes.js",
 		"src/modules/merchant/merchant.routes.js",
 		"src/modules/product/product.routes.js",
+		"src/modules/customer/customer.routes.js",
 	],
 	strategies: ["src/modules/**/*.strategy.js", "src/modules/platform/user/user.strategy.js", "src/modules/customer/customer.strategy.js"],
 };
