@@ -1,5 +1,5 @@
 const path = require("path");
-const { cloudinary } = require(path.join(process.cwd(), "src/config/lib/cloudinary"));
+const cloudinary = require(path.join(process.cwd(), "src/config/lib/cloudinary"));
 const User = require(path.join(process.cwd(), "src/modules/platform/user/user.model"));
 const Image = require(path.join(process.cwd(), "src/modules/platform/image/image.model"));
 
