@@ -1,7 +1,8 @@
 const path = require("path");
 const passport = require("passport");
 const { Strategy } = require("passport-jwt");
-const Customer = require(path.join(process.cwd(), "src/modules/customer/customer.model"));
+const User = require(path.join(process.cwd(), "src/modules/platform/user/user.model"));
+const Profile = require(path.join(process.cwd(), "src/modules/platform/profile/profile.model"));
 const nodeCache = require(path.join(process.cwd(), "src/config/lib/nodecache"));
 
 module.exports = () => {
@@ -16,13 +17,22 @@ module.exports = () => {
 	passport.use(
 		"customer-jwt",
 		new Strategy({ secretOrKey: nodeCache.getValue("TOKEN_SECRET"), jwtFromRequest: cookieExtractor }, function (payload, done) {
-			Customer.findOne({
+			User.findOne({
 				where: {
 					id: payload.id,
 				},
-			}).then((customer) => {
-				if (customer) {
-					return done(null, customer);
+				include: [
+					{
+						model: Profile,
+						as: "profile",
+						where: {
+							title: "Customer",
+						},
+					},
+				],
+			}).then((user) => {
+				if (user) {
+					return done(null, user);
 				}
 
 				return done(null, false);

@@ -2,6 +2,7 @@ const path = require("path");
 const sequelize = require(path.join(process.cwd(), "/src/config/lib/sequelize.js"));
 const { DataTypes } = require("sequelize");
 const Profile = require(path.join(process.cwd(), "src/modules/platform/profile/profile.model"));
+const Image = require(path.join(process.cwd(), "src/modules/platform/image/image.model"));
 
 const User = sequelize.define(
 	"users",
@@ -24,6 +25,9 @@ const User = sequelize.define(
 			//allowNull: false,
 			type: DataTypes.STRING,
 		},
+		profile_image_id: {
+			type: DataTypes.STRING,
+		},
 		created_by: {
 			type: DataTypes.UUID,
 		},
@@ -40,5 +44,6 @@ const User = sequelize.define(
 );
 
 User.belongsTo(Profile, { as: "profile", foreignKey: "profile_id", constraints: false });
+User.belongsTo(Image, { as: "profile_image", foreignKey: "profile_image_id", constraints: false });
 
 module.exports = User;
