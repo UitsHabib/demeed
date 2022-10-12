@@ -1,6 +1,7 @@
 const path = require("path");
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
 const cors = require("cors");
 const config = require("../index");
 const nodeCache = require(path.join(process.cwd(), "src/config/lib/nodecache"));
@@ -8,6 +9,8 @@ const nodeCache = require(path.join(process.cwd(), "src/config/lib/nodecache"));
 module.exports = () => {
 	const app = express();
 
+	app.use(bodyParser.urlencoded({ extended: false }));
+	app.use(bodyParser.json());
 	app.use(cookieParser(nodeCache.getValue("COOKIE_SECRET")));
 	app.use(express.json());
 	app.use(express.urlencoded({ extended: true }));
