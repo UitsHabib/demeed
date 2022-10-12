@@ -47,13 +47,11 @@ async function getUserWithServices(userId) {
 		user = {
 			profile: {
 				profile_permissions: [
-					{
-
-					},
+					{ },
 					{
 						permission: {
 							permission_services: [
-								{}, 
+								{ }, 
 								{
 									service: {}
 								}

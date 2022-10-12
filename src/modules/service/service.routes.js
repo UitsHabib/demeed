@@ -1,6 +1,9 @@
+const path = require("path");
 const { getServices } = require("./service.controller");
-const AdminStrategy = require("../admin/admin.authentication.middleware");
+const UserStrategy = require(path.join(process.cwd(), "src/modules/user/user.authentication.middleware"));
+const { Services } = require(path.join(process.cwd(), "src/modules/core/authorization/authorization.constants"));
+const { ServiceGuard } = require(path.join(process.cwd(), "src/modules/core/authorization/authorization.middlewares"));
 
 module.exports = (app) => {
-    app.get("/api/services", AdminStrategy, getServices);
+    app.get("/api/services", UserStrategy, ServiceGuard([Services.MANAGE_SERVICE]), getServices);
 };
