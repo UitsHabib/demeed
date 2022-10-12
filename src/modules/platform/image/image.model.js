@@ -17,6 +17,12 @@ const Image = sequelize.define(
 		public_id: {
 			type: DataTypes.STRING,
 		},
+		created_by: {
+			type: DataTypes.UUID,
+		},
+		updated_by: {
+			type: DataTypes.UUID,
+		},
 	},
 	{
 		tableName: "images",

@@ -21,7 +21,6 @@ async function init() {
 	const Permission = require(path.join(process.cwd(), "src/modules/platform/permission/permission.model.js"));
 	const PermissionService = require(path.join(process.cwd(), "src/modules/platform/permission/permission-service.model.js"));
 	const ProfilePermission = require(path.join(process.cwd(), "src/modules/platform/permission/profile-permission.model.js"));
-	const Customer = require(path.join(process.cwd(), "/src/modules/customer/customer.model.js"));
 
 	require(path.join(process.cwd(), "src/modules/merchant/merchant.model.js"));
 	require(path.join(process.cwd(), "src/modules/product/product.model"));
@@ -109,7 +108,7 @@ async function init() {
 				{ title: "Manage Permissions", slug: "manage-permissions", created_by: admin.id, updated_by: admin.id },
 				{ title: "Manage Services", slug: "manage-services", created_by: admin.id, updated_by: admin.id },
 				{ title: "Get Customer List", slug: "get-customer-list", created_by: admin.id, updated_by: admin.id },
-				{ title: "Update Customer Profile", slug: "update-customer-profile", created_by: admin.id, updated_by: admin.id },
+				{ title: "Update Profile", slug: "update-profile", created_by: admin.id, updated_by: admin.id },
 				{ title: "Delete Customer Profile", slug: "delete-customer-profile", created_by: admin.id, updated_by: admin.id },
 				{ title: "Get Customer Profile", slug: "get-customer-profile", created_by: admin.id, updated_by: admin.id },
 			];
@@ -155,7 +154,7 @@ async function init() {
 				Service.findOne({ where: { title: "Manage Permissions" } }),
 				Service.findOne({ where: { title: "Manage Services" } }),
 				Service.findOne({ where: { title: "Get Customer List" } }),
-				Service.findOne({ where: { title: "Update Customer Profile" } }),
+				Service.findOne({ where: { title: "Update Profile" } }),
 				Service.findOne({ where: { title: "Delete Customer Profile" } }),
 				Service.findOne({ where: { title: "Get Customer Profile" } }),
 
@@ -176,14 +175,14 @@ async function init() {
 				] = values;
 
 				const permission_services = [
-					{ permission_id: systemAdminPermission.id, service_id: manageUserService.id },
-					{ permission_id: systemAdminPermission.id, service_id: manageProfileService.id },
-					{ permission_id: systemAdminPermission.id, service_id: managePermissionService.id },
-					{ permission_id: systemAdminPermission.id, service_id: manageService.id },
-					{ permission_id: systemAdminPermission.id, service_id: getCustomerList.id },
-					{ permission_id: customerPermission.id, service_id: updateCustomerProfile.id },
-					{ permission_id: customerPermission.id, service_id: deleteCustomerProfile.id },
-					{ permission_id: customerPermission.id, service_id: getCustomerProfile.id },
+					{ permission_id: systemAdminPermission.id, service_id: manageUserService.id, created_by: admin.id, updated_by: admin.id },
+					{ permission_id: systemAdminPermission.id, service_id: manageProfileService.id, created_by: admin.id, updated_by: admin.id },
+					{ permission_id: systemAdminPermission.id, service_id: managePermissionService.id, created_by: admin.id, updated_by: admin.id },
+					{ permission_id: systemAdminPermission.id, service_id: manageService.id, created_by: admin.id, updated_by: admin.id },
+					{ permission_id: systemAdminPermission.id, service_id: getCustomerList.id, created_by: admin.id, updated_by: admin.id },
+					{ permission_id: customerPermission.id, service_id: updateCustomerProfile.id, created_by: admin.id, updated_by: admin.id },
+					{ permission_id: customerPermission.id, service_id: deleteCustomerProfile.id, created_by: admin.id, updated_by: admin.id },
+					{ permission_id: customerPermission.id, service_id: getCustomerProfile.id, created_by: admin.id, updated_by: admin.id },
 				];
 
 				PermissionService.destroy({ truncate: { cascade: true } }).then(function () {

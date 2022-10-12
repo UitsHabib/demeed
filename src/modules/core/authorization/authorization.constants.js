@@ -6,7 +6,7 @@ const Services = {
 	MANAGE_SERVICE: "manage-services",
 	MANAGE_MERCHANT: "manage-merchants",
 	GET_CUSTOMER_LIST: "get-customer-list",
-	UPDATE_CUSTOMER_PROFILE: "update-customer-profile",
+	UPDATE_PROFILE: "update-profile",
 	DELETE_CUSTOMER_PROFILE: "delete-customer-profile",
 	GET_CUSTOMER_PROFILE: "get-customer-profile",
 };
