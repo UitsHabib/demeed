@@ -66,6 +66,7 @@ async function getUserWithServices(userId) {
 	*/
 
 	const services = [];
+
 	if (user?.profile) {
 		for (const profilePermission of user.profile.profile_permissions) {
 			const permission = profilePermission.permission;
