@@ -4,7 +4,8 @@ const Services = {
 	MANAGE_PERMISSION: "manage-permissions",
 	MANAGE_SHOP: "manage-shops",
 	MANAGE_SERVICE: "manage-services",
-    MANAGE_MERCHANT: "manage-merchants"
+	MANAGE_MERCHANT: "manage-merchants",
+	GET_CUSTOMER_LIST: "get-customer-list",
 };
 
 module.exports = { Services };
