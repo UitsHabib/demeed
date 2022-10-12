@@ -1,5 +1,5 @@
 const path = require("path");
-const { multerUploads } = require(path.join(process.cwd(), "src/modules/core/middlewares/multer.middleware"));
+const multer = require(path.join(process.cwd(), "src/config/lib/multer.js"));
 const CustomerStrategy = require(path.join(process.cwd(), "src/modules/customer/customer.authentication.middleware"));
 const UserStrategy = require(path.join(process.cwd(), "src/modules/platform/user/user.authentication.middleware"));
 const { loginSchema } = require(path.join(process.cwd(), "src/modules/customer/customer.schema"));
@@ -11,6 +11,6 @@ const { ServiceGuard } = require(path.join(process.cwd(), "src/modules/core/auth
 module.exports = (app) => {
 	app.post("/api/customers/login", validate(loginSchema), login);
 	app.post("/api/customers/logout", CustomerStrategy, logout);
-	app.route("/api/customers/profile").get(CustomerStrategy, getCustomerProfile).patch(CustomerStrategy, multerUploads, updateCustomerProfile);
+	app.route("/api/customers/profile").get(CustomerStrategy, getCustomerProfile).put(CustomerStrategy, multer.single("image"), updateCustomerProfile);
 	app.get("/api/customers", UserStrategy, ServiceGuard([Services.GET_CUSTOMER_LIST]), getCustomerList);
 };

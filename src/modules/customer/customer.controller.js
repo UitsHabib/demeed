@@ -1,8 +1,7 @@
 const path = require("path");
-const { where } = require("sequelize");
+const cloudinary = require(path.join(process.cwd(), "src/config/lib/cloudinary"));
 const Customer = require(path.join(process.cwd(), "src/modules/customer/customer.model"));
 const { generateAccessToken } = require(path.join(process.cwd(), "src/modules/customer/customer.service"));
-const { uploader } = require(path.join(process.cwd(), "src/config/lib/cloudinaryConfig"));
 const { dataUri } = require(path.join(process.cwd(), "src/modules/core/middlewares/multer.middleware"));
 
 const login = async (req, res) => {
@@ -57,24 +56,15 @@ const getCustomerProfile = async (req, res) => {
 const updateCustomerProfile = async (req, res) => {
 	try {
 		const id = req.user.id;
+		const customer = await Customer.findOne({ where: { id } });
 
-		if (req.file) {
-			const file = dataUri(req).content;
-			return uploader
-				.upload(file)
-				.then(async (result) => {
-					const image = result.url;
+		if (req.file?.path) {
+			const fileUrl = await cloudinary.uploader.upload(req.file?.path);
 
-					await Customer.update({ profile_image: image }, { where: { id } });
-					const updatedCustomer = await Customer.findOne({ where: { id } });
-
-					return res.status(200).json(updatedCustomer);
-				})
-				.catch((err) => {
-					console.log(err);
-					res.status(400).send("Can not update profile");
-				});
+			await Customer.update({ profile_image: fileUrl.secure_url }, { where: { id } });
 		}
+
+		return res.status(200).json(customer);
 	} catch (err) {
 		console.log(err);
 		res.status(500).send("Internal server error.");
