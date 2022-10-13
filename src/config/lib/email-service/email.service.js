@@ -18,10 +18,12 @@ async function send(options) {
 	try {
 		const handlebarOptions = {
 			viewEngine: {
-				partialsDir: "./src/config/lib/templates/email.handlebars",
+				extName: ".hbs",
+				partialsDir: path.resolve(__dirname, "./templates"),
 				defaultLayout: false,
 			},
-			viewPath: "./src/config/lib/templates/email.handlebars"
+			viewPath: path.resolve(__dirname, "./templates"),
+			extName: ".hbs"
 		};
 
 		transporter.use("compile", handlebars(handlebarOptions));
