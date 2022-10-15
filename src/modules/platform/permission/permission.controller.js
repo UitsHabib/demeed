@@ -1,10 +1,22 @@
-const Permission = require("./permission.model");
-const Service = require("../service/service.model");
-const PermissionService = require("./permission-service.model");
+const path = require('path');
+const Service = require(path.join(process.cwd(), "src/modules/platform/service/service.model"));
+const Permission = require(path.join(process.cwd(), "src/modules/platform/permission/permission.model"));
+const PermissionService = require(path.join(process.cwd(), "src/modules/platform/permission/permission-service.model"));
 
 const getPermissions = async (req, res) => {
     try {
-        const permissions = await Permission.findAll({
+        const page = req.query.page ? req.query.page - 1 : 0;
+        if(page < 0) return res.status(404).send("Page must be greater or equal one");
+
+        const limit = req.query.limit ? +req.query.limit : 15;
+        const offset = page * limit;
+        
+        const order = [
+            ["created_at", "DESC"],
+            ["id", "DESC"]
+        ]
+
+        const { count: totalPermission, rows: permissions }  = await Permission.findAndCountAll({
             include: [
                 {
                     model: PermissionService,
@@ -16,13 +28,26 @@ const getPermissions = async (req, res) => {
                         }
                     ]
                 }
-            ]
+            ],
+            offset,
+            limit,
+            order
         });
 
-        res.status(200).send(permissions);
+        const data = {
+            permissions,
+            metaData: {
+                page: page + 1,
+                limit: limit,
+                total: totalPermission,
+                start: limit * page + 1,
+                end: offset + limit > totalPermission ? totalPermission : offset + limit
+            }
+        };
+
+        res.status(200).send(data);
     } catch (err) {
         console.log(err);
-
         res.status(500).send("Internal server error.");
     };
 };
@@ -50,19 +75,17 @@ const getPermission = async (req, res) => {
         res.status(200).send(permission);
     } catch (err) {
         console.log(err);
-
         res.status(500).send("Internal server error.");
     };
 };
 
 const createPermission = async (req, res) => {
     try {
-        const id = req.user.id;
         const { title, description, services } = req.body;
 
         const [ permission, created ] = await Permission.findOrCreate({
             where: { title },
-            defaults: { title, description, created_by: id, updated_by: id }
+            defaults: { title, description, created_by: req.user.id, updated_by: req.user.id }
         });
 
         if(!created) {
@@ -94,7 +117,6 @@ const createPermission = async (req, res) => {
         res.status(201).send(permissionWithServices);
     } catch (err) {
         console.log(err);
-
         res.status(500).send("Internal server error.")
     }
 };
@@ -102,18 +124,18 @@ const createPermission = async (req, res) => {
 const updatePermission = async (req, res) => {
     try {
         const { id } = req.params;
-        const userId = req.user.id;
         const { title, description, services } = req.body;
 
         const permission = await Permission.findOne({ where: { id } });
 
         if (!permission) return res.status(404).send("Permission not found!");
 
-        if (title) await permission.update({ title });
+        if (title) await permission.update({ title, updated_by: req.user.id });
 
-        if (description) await permission.update({ description });
+        if (description) await permission.update({ description, updated_by: req.user.id });
 
         if (services) {
+            await permission.update({ updated_by: req.user.id });
             await PermissionService.destroy({ where: { permission_id: id } });
 
             await Promise.all(services.map(async service_id => {
@@ -122,8 +144,6 @@ const updatePermission = async (req, res) => {
                 await PermissionService.create({ permission_id, service_id });
             }));
         };
-
-        if(title || description || services) await permission.update({ updated_by: userId })
 
         const permissionWithServices = await Permission.findOne({
             where: { id: permission.id },
@@ -144,7 +164,6 @@ const updatePermission = async (req, res) => {
         res.status(201).send(permissionWithServices);
     } catch (err) {
         console.log(err);
-
         res.status(500).send("Internal server error.")
     };
 }
@@ -177,7 +196,6 @@ const deletePermission = async (req, res) => {
         res.status(200).send(permissionWithServices)
     } catch (err) {
         console.log(err);
-
         res.status(500).send("Internal server error.")
     };
 }

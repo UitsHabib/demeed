@@ -1,8 +1,8 @@
 const path = require("path");
 const { DataTypes } = require("sequelize");
 const sequelize = require(path.join(process.cwd(), "/src/config/lib/sequelize.js"));
-const Service = require(path.join(process.cwd(), "src/modules/service/service.model"));
-const Permission = require(path.join(process.cwd(), "src/modules/permission/permission.model"));
+const Service = require(path.join(process.cwd(), "src/modules/platform/service/service.model"));
+const Permission = require(path.join(process.cwd(), "src/modules/platform/permission/permission.model"));
 
 const PermissionService = sequelize.define(
 	"permission_services",
@@ -30,7 +30,7 @@ const PermissionService = sequelize.define(
 	},
 	{
 		tableName: "permission_services",
-		timestamps: false,
+		timestamps: true,
 		createdAt: "created_at",
 		updatedAt: "updated_at",
 	}

@@ -1,6 +1,7 @@
 const path = require("path");
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const cors = require('cors');
 const config = require("../index");
 const nodeCache = require(path.join(process.cwd(), "src/config/lib/nodecache"));
 
@@ -10,6 +11,14 @@ module.exports = () => {
 	app.use(cookieParser(nodeCache.getValue("COOKIE_SECRET")));
 	app.use(express.json());
 	app.use(express.urlencoded({ extended: true }));
+
+	const corsOptions = {
+        credentials: true,
+        origin: (origin, callback) => {
+            return callback(null, true);
+        }
+    };
+    app.use(cors(corsOptions));
 
 	app.set("port", nodeCache.getValue("PORT"));
 

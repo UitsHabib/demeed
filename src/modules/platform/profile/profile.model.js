@@ -1,7 +1,8 @@
 const path = require("path");
 const sequelize = require(path.join(process.cwd(), "/src/config/lib/sequelize.js"));
 const { DataTypes } = require("sequelize");
-const ProfilePermission = require(path.join(process.cwd(), "src/modules/permission/profile-permission.model"));
+const User = require("../user/user.model");
+const ProfilePermission = require(path.join(process.cwd(), "src/modules/platform/permission/profile-permission.model"));
 
 const Profile = sequelize.define(
 	"profiles",
@@ -33,7 +34,7 @@ const Profile = sequelize.define(
 	},
 	{
 		tableName: "profiles",
-		timestamps: false,
+		timestamps: true,
 		createdAt: "created_at",
 		updatedAt: "updated_at",
 	}

@@ -1,0 +1,11 @@
+module.exports.login = require("./login");
+module.exports.logout = require("./logout");
+module.exports.getUsers = require("./get-users");
+module.exports.createUser = require("./create-user");
+module.exports.updateUser = require("./update-user");
+module.exports.deleteUser = require("./delete-user");
+module.exports.getUserProfile = require("./get-user-profile");
+module.exports.updateUserProfile = require("./update-user-profile");
+module.exports.changePassword = require("./change-password");
+module.exports.forgotPassword = require("./forget-password");
+module.exports.resetPassword = require("./reset-password");
