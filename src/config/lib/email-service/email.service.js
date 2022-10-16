@@ -14,14 +14,16 @@ const transporter = nodemailer.createTransport({
 	},
 });
 
-function send(options) {
+async function send(options) {
 	try {
 		const handlebarOptions = {
 			viewEngine: {
-				partialsDir: path.join(path.resolve(options.templateUrl)),
+				extName: ".hbs",
+				partialsDir: path.resolve(__dirname, "./templates"),
 				defaultLayout: false,
 			},
-			viewPath: path.join(path.resolve(options.templateUrl)),
+			viewPath: path.resolve(__dirname, "./templates"),
+			extName: ".hbs"
 		};
 
 		transporter.use("compile", handlebars(handlebarOptions));
@@ -36,7 +38,7 @@ function send(options) {
 			},
 		};
 
-		transporter.sendMail(mailOptions, function (error, info) {
+		await transporter.sendMail(mailOptions, function (error, info) {
 			if (error) {
 				return console.log(error);
 			}

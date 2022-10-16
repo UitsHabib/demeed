@@ -23,6 +23,8 @@ async function init() {
     const ProfilePermission = require(path.join(process.cwd(), "src/modules/platform/permission/profile-permission.model.js"));
     const Cart = require(path.join(process.cwd(), "src/modules/cart/cart.model.js"));
     const CartItem = require(path.join(process.cwd(), "src/modules/cart/cart-item.model.js"));
+    require(path.join(process.cwd(), "src/modules/order/order.model"))
+    
 
     await sequelize.sync();
 

@@ -1,9 +1,9 @@
 const path = require("path");
 const Order = require(path.join(process.cwd(), "src/modules/order/order.model"));
 
-const createOrder = async (req, res) => {
+const createOrder = async(req, res) => {
     try {
-        const { cart_id } = req.body;
+        const { cart_id, } = req.body;
 
         const [order, created] = await Order.findOrCreate({ 
             where: { cart_id },
@@ -14,7 +14,7 @@ const createOrder = async (req, res) => {
             return res.status(400).send("Invaild Credentials");
         };
 
-        res.status(201).send(order);     
+        res.status(201).send(order);      
     } catch (err) {
         console.log(err);
         res.status(500).send("Internal server error.");
@@ -22,6 +22,7 @@ const createOrder = async (req, res) => {
 }
 
 const getOrders = async (req, res) => {
+
     try {
         const orders = await Order.findAll()
 
@@ -33,3 +34,4 @@ const getOrders = async (req, res) => {
 }
 
 module.exports.createOrder = createOrder;
+module.exports.getOrders = getOrders;

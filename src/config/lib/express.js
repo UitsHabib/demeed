@@ -16,8 +16,6 @@ module.exports = () => {
         credentials: true,
         origin: (origin, callback) => {
             return callback(null, true);
-
-            callback(new Error('Not allowed by CORS'));
         }
     };
     app.use(cors(corsOptions));
