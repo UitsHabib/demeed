@@ -47,6 +47,6 @@ const Product = sequelize.define(
 	}
 );
 
-Product.hasMany(File, { as: "files", foreignKey: "owner_id" });
+//Product.hasMany(File, { as: "files", foreignKey: "owner_id" });
 
 module.exports = Product;

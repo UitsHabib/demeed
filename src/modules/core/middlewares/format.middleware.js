@@ -3,8 +3,6 @@ const multiparty = require('multiparty');
 const format = (req, res, next) => {
     var form = new multiparty.Form();
     form.parse(req, function(err, fields, files) {
-        // console.log(files);
-
         if (err) {
             return res.status(500).send("Internal Server Error");
         }

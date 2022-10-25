@@ -19,7 +19,7 @@ const File = sequelize.define("files", {
     table_name: {
         allowNull: false,
         type: DataTypes.ENUM,
-        values: ["products"]
+        values: ["products", "users"]
     },
     created_by: {
         type: DataTypes.UUID,

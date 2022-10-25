@@ -1,5 +1,4 @@
 const path = require("path");
-const { cloudinary } = require(path.join(process.cwd(), "src/config/lib/cloudinary"));
 const User = require(path.join(process.cwd(), "src/modules/platform/user/user.model"));
 const { generateAccessToken } = require(path.join(process.cwd(), "src/modules/platform/user/user.service"));
 const EmailService = require(path.join(process.cwd(), "src/config/lib/email-service/email.service"));

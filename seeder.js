@@ -15,6 +15,7 @@ async function init() {
 		}
 	});
 
+	require(path.join(process.cwd(), "src/modules/core/storage/file.model.js"));
 	const Service = require(path.join(process.cwd(), "src/modules/platform/service/service.model.js"));
 	const User = require(path.join(process.cwd(), "src/modules/platform/user/user.model.js"));
 	const Profile = require(path.join(process.cwd(), "src/modules/platform/profile/profile.model.js"));
@@ -24,7 +25,6 @@ async function init() {
 
 	require(path.join(process.cwd(), "src/modules/merchant/merchant.model.js"));
 	require(path.join(process.cwd(), "src/modules/product/product.model"));
-	require(path.join(process.cwd(), "src/modules/core/storage/file.model.js"));
 
 	await sequelize.sync();
 
