@@ -33,9 +33,7 @@ async function send(options) {
 			to: options.toAddresses,
 			subject: options.subject,
 			template: "email",
-			context: {
-				project: "DEMEED",
-			},
+			context: options.data
 		};
 
 		await transporter.sendMail(mailOptions, function (error, info) {

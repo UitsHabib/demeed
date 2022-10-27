@@ -1,7 +1,10 @@
 const path = require("path");
+const User = require(path.join(process.cwd(), "src/modules/platform//user/user.model"));
 const Profile = require(path.join(process.cwd(), "src/modules/platform/profile/profile.model"));
 const Permission = require(path.join(process.cwd(), "src/modules/platform/permission/permission.model"));
 const ProfilePermission = require(path.join(process.cwd(), "src/modules/platform/permission/profile-permission.model"));
+const PermissionService = require(path.join(process.cwd(), "src/modules/platform/permission/permission-service.model"));
+const Service = require(path.join(process.cwd(), "src/modules/platform/service/service.model"));
 
 const getProfiles = async (req, res) => {
 	try {
@@ -19,12 +22,60 @@ const getProfiles = async (req, res) => {
         const { count: totalProfile, rows: profile } = await Profile.findAndCountAll({  
             include: [
                 {
+                    model: User,
+                    as: "createdByUser",
+                    attributes: ["email", "profile_id" ]
+                },
+                {
+                    model: User,
+                    as: "updatedByUser",
+                    attributes: ["email", "profile_id" ]
+                },
+                {
                     model: ProfilePermission,
                     as: "profile_permissions",
+                    attributes: ["permission_id", "profile_id" ],
                     include: [
                         {
                             model: Permission,
-                            as: "permission"
+                            as: "permission",
+                            attributes: ["title", "description", "type"],
+                            include: [
+                                {
+                                    model: User,
+                                    as: "createdByUser",
+                                    attributes: ["email", "profile_id" ]
+                                },
+                                {
+                                    model: User,
+                                    as: "updatedByUser",
+                                    attributes: ["email", "profile_id" ]
+                                },
+                                {
+                                    model: PermissionService,
+                                    as: "permission_services",
+                                    attributes: ["permission_id", "service_id" ],
+                                    include: [
+                                        {
+                                            model: Service,
+                                            as: "service",
+                                            attributes: ["title", "slug", "parent_id"],
+                                            include: [
+                                                {
+                                                    model: User,
+                                                    as: "createdByUser",
+                                                    attributes: ["email", "profile_id" ]
+                                                },
+                                                {
+                                                    model: User,
+                                                    as: "updatedByUser",
+                                                    attributes: ["email", "profile_id" ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
                         }
                     ]
                 }

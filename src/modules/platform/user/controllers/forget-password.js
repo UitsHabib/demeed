@@ -14,7 +14,9 @@ const forgotPassword = async (req, res) => {
 			toAddresses: [email],
 			//templateUrl: "src/config/lib/email-service/templates/email.handlebars",
 			subject: "Forgot Password",
-			data: {},
+			data: {
+                project: "7826"
+            },
 		};
 
 		EmailService.send(options);

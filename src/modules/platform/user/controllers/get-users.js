@@ -31,7 +31,7 @@ const getUsers = async (req, res) => {
                 {
                     model: User,
                     as: "createdByUser",
-                    attributes: ["id", "email", "profile_id"]
+                    attributes: ["id", "email", "profile_id" ]
                 },
                 {
                     model: User,
