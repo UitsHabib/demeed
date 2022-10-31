@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  
   "scripts": {
     "start": "nodemon --legacy-watch server.js",
     "seed": "node seeder.js"
@@ -12,12 +13,18 @@
   "license": "ISC",
   "dependencies": {
     "async": "^3.2.4",
+    "body-parser": "^1.20.1",
+    "cloudinary": "^1.32.0",
     "cookie-parser": "^1.4.6",
-    "dotenv": "^16.0.2",
+    "cors": "^2.8.5",
+    "datauri": "^4.1.0",
+    "dotenv": "^16.0.3",
     "express": "^4.18.1",
     "glob": "^8.0.3",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
+    "multer": "^1.4.5-lts.1",
+    "multiparty": "^4.2.3",
     "mysql2": "^2.3.3",
     "node-cache": "^5.1.2",
     "nodemailer": "^6.7.8",
