@@ -8,6 +8,7 @@ const DB_PASSWORD = nodeCache.getValue("DB_PASSWORD");
 
 const sequelize = new Sequelize("blog", DB_USER, DB_PASSWORD, {
 	host: DB_HOST,
+	// port: 3030,
 	dialect: "mysql",
 	logging: false,
 	sync: true,
